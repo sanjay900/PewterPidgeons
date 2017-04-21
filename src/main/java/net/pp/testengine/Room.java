@@ -6,6 +6,8 @@ package net.pp.testengine;
  */
 public class Room {
 
+    boolean canOccupy;
+
     public void draw(){
 
     }
