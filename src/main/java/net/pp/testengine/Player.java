@@ -7,9 +7,7 @@ import static processing.core.PApplet.radians;
 
 public class Player implements GameObject{
     public Player(Location start) {
-        int locX = (int) (start.getX()*1.5*Room.ROOM_SIZE);
-        int locY = (int) (start.getY()*1.5*Room.ROOM_SIZE);
-        camPos = new PVector(-locX/10,-locY/10);
+        camPos = new PVector(-start.getX(),-start.getY()).mult(Room.ROOM_SIZE);
     }
     // variables for Dom's cameraw
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
