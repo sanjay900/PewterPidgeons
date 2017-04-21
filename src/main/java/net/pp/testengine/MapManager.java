@@ -8,6 +8,8 @@ package net.pp.testengine;
  * render calls are piped through here
  */
 public class MapManager {
+    Room[][] roomArray = new Room[][]{};
+
     public MapManager(int xSize, int ySize){
         this.xSize = xSize;
         this.ySize = ySize;
