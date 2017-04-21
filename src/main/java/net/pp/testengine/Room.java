@@ -3,6 +3,7 @@ package net.pp.testengine;
 import lombok.AllArgsConstructor;
 import processing.core.PConstants;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class Room implements GameObject{
     }
 
     @Override
-    public void render(TestEngine engine) {
+    public void render(TestEngine engine, Rectangle bounds) {
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*(Room.ROOM_SIZE+0.01f)),position.getY()*Room.ROOM_SIZE);
         if (isWall) {
@@ -62,6 +63,6 @@ public class Room implements GameObject{
             engine.endShape();
         }
         engine.popMatrix();
-        entities.forEach(o -> o.render(engine));
+        entities.forEach(o -> o.render(engine, bounds));
     }
 }

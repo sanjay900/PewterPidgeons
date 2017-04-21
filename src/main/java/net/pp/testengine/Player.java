@@ -3,6 +3,8 @@ package net.pp.testengine;
 import processing.core.PApplet;
 import processing.core.PVector;
 
+import java.awt.*;
+
 import static processing.core.PApplet.print;
 import static processing.core.PApplet.radians;
 
@@ -56,7 +58,7 @@ public class Player implements GameObject{
         return new Location(-Math.round(realPos.x), -Math.round(realPos.y), (int)realPos.z);
     }
     @Override
-    public void render(TestEngine engine) {
+    public void render(TestEngine engine, Rectangle blueBounds) {
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.

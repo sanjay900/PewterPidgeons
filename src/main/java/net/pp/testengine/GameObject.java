@@ -1,6 +1,8 @@
 package net.pp.testengine;
 
+import java.awt.*;
+
 public interface GameObject {
     void update();
-    void render(TestEngine engine);
+    void render(TestEngine engine, Rectangle blueBounds);
 }

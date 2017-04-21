@@ -2,6 +2,7 @@ package net.pp.testengine;
 
 import lombok.Getter;
 
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -36,13 +37,8 @@ public class MapManager implements GameObject{
         roomMap.values().forEach(Room::update);
     }
 
-    public void render(TestEngine engine){
-        roomMap.values().forEach(r -> r.render(engine));
-    }
-    public Room getRelative(Room origin, Direction dir) {
-        Location newLocation = origin.position.getRelative(dir);
-        if (newLocation.getX() < 0 || newLocation.getY() < 0 || newLocation.getX()> xSize || newLocation.getY() > ySize) return null;
-        return roomMap.get(newLocation);
+    public void render(TestEngine engine, Rectangle blueBounds){
+        roomMap.values().forEach(r -> r.render(engine, blueBounds));
     }
 
     public boolean isWall(Location location) {
