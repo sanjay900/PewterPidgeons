@@ -1,0 +1,18 @@
+group 'net.pewterpidgeons'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://maven.tangentmc.net/repository/victoria"
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'net.tangentmc:ProcessingUtils:1.2'
+}
