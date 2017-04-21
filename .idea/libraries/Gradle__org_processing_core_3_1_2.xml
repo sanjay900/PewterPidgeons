@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.processing:core:3.1.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.processing/core/3.1.2/abb51f18a6c5335cc57e99dbe13a285ba9e4067a/core-3.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.processing/core/3.1.2/f70e36e00cfeb476dacf5e95d37ad1247ba13f80/core-3.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
