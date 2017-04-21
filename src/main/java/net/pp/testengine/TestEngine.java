@@ -26,10 +26,10 @@ public class TestEngine extends PApplet {
         window.confinePointer(true);
     }
     public void draw() {
-        System.out.println(frameRate);
         player.move(input.getMotion());
         GLWindow window = (GLWindow) surface.getNative();
-        window.warpPointer(width/2,height/2);
+        if (window.hasFocus())
+            window.warpPointer(width/2,height/2);
         clear();
         player.render(this);
         manager.render(this);
