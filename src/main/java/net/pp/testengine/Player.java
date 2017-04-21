@@ -27,6 +27,7 @@ public class Player implements GameObject{
         movement.x = 0;
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
+//        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
         if (manager.isWall(getLocation())) {
             camPos = lastLoc;
         } else if (manager.isStair(getLocation())) {
