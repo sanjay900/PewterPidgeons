@@ -36,8 +36,10 @@ public class MapManager implements GameObject{
         // then recurse
         int startX = (int)(Math.random()*xSize);
         int startY = (int)(Math.random()*ySize);
+        Location startLoc = new Location(startX, startY);
         System.out.println("about to gen room");
-        generateRoom(new Location(startX, startY));
+        createRoom(startLoc);
+        generateRoom(startLoc);
     }
 
     private void generateRoom(Location loc){
