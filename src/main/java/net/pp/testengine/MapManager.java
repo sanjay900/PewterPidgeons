@@ -11,18 +11,23 @@ import lombok.Getter;
  */
 public class MapManager implements GameObject{
     @Getter
-    private Room[][] roomArray = new Room[][]{};
+    private Room[][] roomArray;
     private int xSize;
     private int ySize;
 
     public MapManager(int xSize, int ySize){
         this.xSize = xSize;
         this.ySize = ySize;
+        roomArray = new Room[xSize][ySize];
         createMap();
     }
 
     private void createMap(){
-
+        for(int i=0; i<xSize; i++){
+            for(int j=0; j<ySize; j++){
+                roomArray[i][j] = new Room();
+            }
+        }
     }
 
     @Override
@@ -35,9 +40,12 @@ public class MapManager implements GameObject{
     }
 
     public void render(TestEngine engine){
-        for(int i=0; i<xSize; i++){
-            for(int j=0; j<ySize; j++){
-                roomArray[i][j].render(engine);
+        for(int x=0; x<xSize; x++){
+            for(int y=0; y<ySize; y++){
+                engine.pushMatrix();
+                engine.translate(x*Room.ROOM_SIZE,y*Room.ROOM_SIZE);
+                roomArray[x][y].render(engine);
+                engine.popMatrix();
             }
         }
     }
