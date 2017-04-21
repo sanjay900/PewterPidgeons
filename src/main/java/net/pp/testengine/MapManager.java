@@ -1,6 +1,9 @@
 package net.pp.testengine;
 
 import lombok.Getter;
+import processing.core.PVector;
+
+import java.util.HashMap;
 
 /**
  * Created by Klimpen on 21/04/2017.
@@ -11,21 +14,20 @@ import lombok.Getter;
  */
 public class MapManager implements GameObject{
     @Getter
-    private Room[][] roomArray;
+    private HashMap<Location,Room> roomArray = new HashMap<>();
     private int xSize;
     private int ySize;
 
     public MapManager(int xSize, int ySize){
         this.xSize = xSize;
         this.ySize = ySize;
-        roomArray = new Room[xSize][ySize];
         createMap();
     }
 
     private void createMap(){
         for(int i=0; i<xSize; i++){
             for(int j=0; j<ySize; j++){
-                roomArray[i][j] = new Room();
+                roomArray.put(new Location(i,j),new Room(this,new Location(i,j)));
             }
         }
         int startX = (int)(Math.random()*xSize);
@@ -34,23 +36,16 @@ public class MapManager implements GameObject{
 
     @Override
     public void update() {
-        for(int i=0; i<xSize; i++){
-            for(int j=0; j<ySize; j++){
-                roomArray[i][j].update();
-            }
-        }
+        roomArray.values().forEach(Room::update);
     }
 
     public void render(TestEngine engine){
-        for(int x=0; x<xSize; x++){
-            for(int y=0; y<ySize; y++){
-                engine.pushMatrix();
-                engine.translate(x*Room.ROOM_SIZE,y*Room.ROOM_SIZE);
-                roomArray[x][y].render(engine);
-                engine.popMatrix();
-            }
-        }
+        roomArray.values().forEach(r -> r.render(engine));
     }
-
+    public Room getRelative(Room origin, Direction dir) {
+        Location newLocation = origin.position.getRelative(dir);
+        if (newLocation.getX() < 0 || newLocation.getY() < 0 || newLocation.getX()> xSize || newLocation.getY() > ySize) return null;
+        return roomArray.get(newLocation);
+    }
 
 }
