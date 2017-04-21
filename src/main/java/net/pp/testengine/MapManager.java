@@ -20,14 +20,16 @@ public class MapManager implements GameObject{
     private HashMap<Location,Room> roomMap = new HashMap<>();
     private int xSize;
     private int ySize;
+    @Getter
+    private Location startLoc;
 
     public MapManager(int xSize, int ySize){
         this.xSize = xSize;
         this.ySize = ySize;
-        createMap();
+        this.startLoc = createMap();
     }
 
-    private void createMap(){
+    public Location createMap(){
         // from a room (on init: random)
         // check its adjacent rooms
         // if they havnt been init AND are within bounds
@@ -36,10 +38,11 @@ public class MapManager implements GameObject{
         // then recurse
         int startX = (int)(Math.random()*xSize);
         int startY = (int)(Math.random()*ySize);
+        generateRoom(new Location(startX, startY));
         Location startLoc = new Location(startX, startY);
-        System.out.println("about to gen room");
         createRoom(startLoc);
         generateRoom(startLoc);
+        return startLoc;
     }
 
     private void generateRoom(Location loc){
