@@ -2,9 +2,9 @@ package net.pp.testengine;
 
 import lombok.AllArgsConstructor;
 import processing.core.PConstants;
-import processing.core.PVector;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Klimpen on 21/04/2017.
@@ -16,10 +16,21 @@ public class Room implements GameObject{
     Location position;
     public static final int ROOM_SIZE = 100;
     public boolean isWall;
+    List<GameObject> entities = new ArrayList<>();
 
+    public Room(MapManager manager, Location loc, boolean isWall) {
+        this.manager = manager;
+        this.position = loc;
+        this.isWall = isWall;
+    }
+
+    public void randomize() {
+
+//        en = new HiddenEntity(300,300,25);
+    }
     @Override
     public void update() {
-
+        entities.forEach(GameObject::update);
     }
 
     @Override
@@ -45,5 +56,6 @@ public class Room implements GameObject{
             engine.endShape();
         }
         engine.popMatrix();
+        entities.forEach(o -> o.render(engine));
     }
 }
