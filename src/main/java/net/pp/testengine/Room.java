@@ -4,9 +4,15 @@ package net.pp.testengine;
  * Created by Klimpen on 21/04/2017.
  * TODO everything
  */
-public class Room {
+public class Room implements GameObject{
 
-    public void draw(){
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void render(TestEngine engine) {
 
     }
 }
