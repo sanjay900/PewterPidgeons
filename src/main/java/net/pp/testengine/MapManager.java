@@ -1,6 +1,7 @@
 package net.pp.testengine;
 
 import lombok.Getter;
+import processing.core.PApplet;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.HashMap;
  *
  */
 public class MapManager implements GameObject{
+    private TestEngine te;
     @Getter
     private HashMap<Location,Room> roomMap = new HashMap<>();
     private int xSize;
@@ -19,15 +21,17 @@ public class MapManager implements GameObject{
     @Getter
     private Location startLoc;
 
-    public MapManager(int xSize, int ySize, int zSize){
+    public MapManager(TestEngine te, int xSize, int ySize, int zSize){
+        this.te = te;
         this.xSize = xSize;
         this.ySize = ySize;
         this.zSize = zSize;
-        MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize, zSize);
+        MapGenerator mg = new MapGenerator(te, this, roomMap, xSize, ySize, zSize);
         startLoc = new Location(
                 // makes it so we're not on the
-                Math.max(1,(int)(Math.random()*xSize)),
-                Math.max(1,(int)(Math.random()*ySize)),0);
+                (int)(te.random(1,xSize)),
+                (int)(te.random(1,ySize)),
+                0);
 
         mg.createMap(startLoc);
     }

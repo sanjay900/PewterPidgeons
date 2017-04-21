@@ -79,7 +79,7 @@ public class TestWindow {
                 engine.exit();
                 return;
             }
-
+            System.out.println(e.getKeyChar());
             engine.key = e.getKeyChar();
             engine.keyPressed();
         }
