@@ -15,16 +15,18 @@ public class TestEngine extends PApplet {
     }
     public void settings() {
         size(800, 600, P3D);
-        frameRate(24); // for added cinematic
     }
 
     public void setup() {
+
+        frameRate(144); // for added cinematic
         player = new Player(manager.getStartLoc());
         noCursor();
         GLWindow window = (GLWindow) surface.getNative();
         window.confinePointer(true);
     }
     public void draw() {
+        System.out.println(frameRate);
         player.move(input.getMotion());
         GLWindow window = (GLWindow) surface.getNative();
         window.warpPointer(width/2,height/2);

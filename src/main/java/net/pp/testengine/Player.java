@@ -14,8 +14,8 @@ public class Player implements GameObject{
     // variables for Dom's cameraw
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
-    private float moveAmount = 1f;
-    private float rotSpeed = 6f;
+    private float moveAmount = .2f;
+    private float rotSpeed = 1.2f;
     @Override
     public void update() {
 
