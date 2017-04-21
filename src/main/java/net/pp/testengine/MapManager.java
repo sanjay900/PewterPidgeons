@@ -22,8 +22,10 @@ public class MapManager implements GameObject{
         this.ySize = ySize;
         MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize);
         startLoc = new Location(
-                (int)(Math.random()*xSize),
-                (int)(Math.random()*ySize));
+                // makes it so we're not on the
+                Math.max(1,(int)(Math.random()*xSize)),
+                Math.max(1,(int)(Math.random()*ySize)));
+
         mg.createMap(startLoc);
     }
 
