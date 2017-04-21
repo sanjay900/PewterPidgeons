@@ -8,11 +8,16 @@ import processing.core.PConstants;
 import java.io.IOException;
 
 public enum Models {
-    SCORPION("scorpion.md2","scorpion.png");
+    SCORPION("scorpion.md2","scorpion.png"),STAIR("stairs.md2","stairs.png");
     Models(String modelName, String imageName) {
         this.modelName = modelName;
         this.imageName = imageName;
     }
+    Models(String modelName, String imageName, boolean outline) {
+        this(modelName,imageName);
+        this.outline = outline;
+    }
+    boolean outline = false;
     String modelName;
     MD2Model model;
     String imageName;
@@ -24,12 +29,12 @@ public enum Models {
         }
     }
 
-    public void render(TestEngine engine) {
-        engine.noStroke();
-        engine.translate(0, -10+Room.ROOM_SIZE/2,0);
+    public void render(TestEngine engine, float height, float scale) {
+        if(!outline) engine.noStroke();
+        engine.translate(0, -height+Room.ROOM_SIZE/2,0);
         engine.rotateX(PConstants.HALF_PI);
-        engine.scale(3);
+        engine.scale(scale);
         model.drawModel();
-        engine.stroke(0);
+        if(!outline) engine.stroke(0);
     }
 }

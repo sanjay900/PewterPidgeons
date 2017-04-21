@@ -24,7 +24,7 @@ public class MapManager implements GameObject{
         startLoc = new Location(
                 // makes it so we're not on the
                 Math.max(1,(int)(Math.random()*xSize)),
-                Math.max(1,(int)(Math.random()*ySize)));
+                Math.max(1,(int)(Math.random()*ySize)),0);
 
         mg.createMap(startLoc);
     }
@@ -45,5 +45,9 @@ public class MapManager implements GameObject{
 
     public boolean isWall(Location location) {
             return roomMap.containsKey(location) && roomMap.get(location).isWall;
+    }
+
+    public boolean isStair(Location location) {
+        return roomMap.containsKey(location) && roomMap.get(location).isStair;
     }
 }

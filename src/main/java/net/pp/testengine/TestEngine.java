@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import java.util.Arrays;
 
 public class TestEngine extends PApplet {
-    MapManager manager = new MapManager(30,30);
+    MapManager manager = new MapManager(10,10);
     Player player;
     KeyInput input = new KeyInput();
     TestWindow window;
@@ -37,7 +37,7 @@ public class TestEngine extends PApplet {
         manager.render(this);
         pushMatrix();
         translate(200,0,200);
-        Models.SCORPION.render(this);
+        Models.SCORPION.render(this,3,10);
         popMatrix();
         en.render(this);
 

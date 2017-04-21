@@ -23,6 +23,19 @@ public class MapGenerator {
         // then recurse
         createRoom(startLoc);
         generateRoom(startLoc);
+        Location stair = generateStaircase(startLoc);
+        if (stair == null) return;
+        createMap(stair.getRelative(Direction.UP));
+    }
+
+    private Location generateStaircase(Location startLoc) {
+        if (startLoc.getZ() == 2) return null;
+        Location loc = startLoc;
+        while (loc.equals(startLoc) || roomMap.get(loc).isWall || roomMap.get(loc.getRelative(Direction.EAST)).isWall) {
+            loc = new Location((int)(Math.random()*xSize),(int)(Math.random()*ySize),startLoc.getZ());
+        }
+        roomMap.get(loc).isStair = true;
+        return loc;
     }
 
     private void generateRoom(Location loc){
