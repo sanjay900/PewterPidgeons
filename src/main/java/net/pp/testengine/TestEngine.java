@@ -15,7 +15,9 @@ public class TestEngine extends PApplet {
     }
     public void settings() {
         size(800, 600, P3D);
+        frameRate(24); // for added cinematic
     }
+
     public void setup() {
         player = new Player(manager.getStartLoc());
         noCursor();
@@ -39,3 +41,4 @@ public class TestEngine extends PApplet {
         input.keyReleased(key);
     }
 }
+

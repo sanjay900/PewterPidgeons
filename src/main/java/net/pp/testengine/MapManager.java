@@ -4,16 +4,10 @@ import lombok.Getter;
 
 import java.util.HashMap;
 
-import java.util.ArrayList;
-
-import static processing.core.PApplet.print;
-
 /**
  * Created by Klimpen on 21/04/2017.
  * TODO everything
  *
- * Creates a room[][] roomMap
- * render calls are piped through here
  */
 public class MapManager implements GameObject{
     @Getter
@@ -26,69 +20,11 @@ public class MapManager implements GameObject{
     public MapManager(int xSize, int ySize){
         this.xSize = xSize;
         this.ySize = ySize;
-        this.startLoc = createMap();
-    }
-
-    public Location createMap(){
-        // from a room (on init: random)
-        // check its adjacent rooms
-        // if they havnt been init AND are within bounds
-        // a random number of them will be walls
-        // otherwise they are notwalls - able to be moved into
-        // then recurse
-        int startX = (int)(Math.random()*xSize);
-        int startY = (int)(Math.random()*ySize);
-        generateRoom(new Location(startX, startY));
-        Location startLoc = new Location(startX, startY);
-        createRoom(startLoc);
-        generateRoom(startLoc);
-        return startLoc;
-    }
-
-    private void generateRoom(Location loc){
-        ArrayList<Location> adjRoomList = new ArrayList<Location>();
-
-        checkAdj(adjRoomList, loc.getRelative(Direction.NORTH));
-        checkAdj(adjRoomList, loc.getRelative(Direction.EAST));
-        checkAdj(adjRoomList, loc.getRelative(Direction.SOUTH));
-        checkAdj(adjRoomList, loc.getRelative(Direction.WEST));
-        int numWalls = (int)(Math.random()*adjRoomList.size());
-
-        for(int i=0; i<adjRoomList.size(); i++){
-            if(i<numWalls){
-                createWall(adjRoomList.get(i));
-            } else {
-                createRoom(adjRoomList.get(i));
-            }
-        }
-
-        for(int i=0; i<adjRoomList.size(); i++){
-            generateRoom(adjRoomList.get(i));
-        }
-    }
-
-    private void checkAdj(ArrayList<Location> adjRoomList, Location loc){
-        if(loc.getX()<xSize-1 && 0<loc.getX()){
-            if(loc.getY()<ySize-1 && 0<loc.getY()){
-                if(!roomMap.containsKey(loc)){
-                    adjRoomList.add(loc);
-                    return;
-                }
-            }
-        }
-        createWall(loc);
-    }
-
-    private void createRoom(Location loc){
-        if(!roomMap.containsKey(loc)){
-            roomMap.put(loc,new Room(this, loc, false));
-        } else {
-            roomMap.get(loc).isWall=false;
-        }
-    }
-
-    private void createWall(Location loc){
-        roomMap.putIfAbsent(loc, new Room(this, loc, true));
+        MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize);
+        Location startLoc = new Location(
+                (int)(Math.random()*xSize),
+                (int)(Math.random()*ySize));
+        mg.createMap(startLoc);
     }
 
     @Override
