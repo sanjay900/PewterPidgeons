@@ -7,8 +7,8 @@ import static processing.core.PApplet.radians;
 
 public class Player implements GameObject{
     public Player(Location start) {
-        int locX = start.getX()*Room.ROOM_SIZE;
-        int locY = start.getY()*Room.ROOM_SIZE;
+        int locX = (int) (start.getX()*1.5*Room.ROOM_SIZE);
+        int locY = (int) (start.getY()*1.5*Room.ROOM_SIZE);
         camPos = new PVector(-locX/10,-locY/10);
     }
     // variables for Dom's cameraw
@@ -20,8 +20,19 @@ public class Player implements GameObject{
     public void update() {
 
     }
-    public void move(PVector movement) {
-        this.camPos.add(movement.copy().rotate(-camRot).mult(moveAmount));
+    public void move(PVector movement, MapManager manager) {
+        PVector lastLoc = camPos.copy();
+        PVector mvmt = movement.copy().rotate(-camRot).mult(moveAmount);
+        this.camPos.add(mvmt).add(mvmt);
+        if (manager.isWall(getLocation())) {
+            camPos = lastLoc;
+        } else {
+            camPos.sub(mvmt);
+        }
+    }
+    public Location getLocation() {
+        PVector realPos = PVector.div(camPos,Room.ROOM_SIZE);
+        return new Location(-Math.round(realPos.x), -Math.round(realPos.y));
     }
     @Override
     public void render(TestEngine engine) {

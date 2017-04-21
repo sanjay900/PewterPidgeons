@@ -21,7 +21,6 @@ public class MapGenerator {
         // a random number of them will be walls
         // otherwise they are notwalls - able to be moved into
         // then recurse
-        System.out.println("about to gen room");
         createRoom(startLoc);
         generateRoom(startLoc);
     }

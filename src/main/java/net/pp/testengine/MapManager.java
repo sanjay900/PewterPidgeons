@@ -43,4 +43,7 @@ public class MapManager implements GameObject{
         return roomMap.get(newLocation);
     }
 
+    public boolean isWall(Location location) {
+            return roomMap.get(location).isWall;
+    }
 }
