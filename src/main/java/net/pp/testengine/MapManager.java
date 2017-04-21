@@ -28,6 +28,8 @@ public class MapManager implements GameObject{
                 roomArray[i][j] = new Room();
             }
         }
+        int startX = (int)(Math.random()*xSize);
+        int startY = (int)(Math.random()*ySize);
     }
 
     @Override
