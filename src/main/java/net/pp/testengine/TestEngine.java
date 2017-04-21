@@ -12,8 +12,10 @@ public class TestEngine extends PApplet {
         size(800, 600, P3D);
     }
     public void setup() {
+
     }
     public void draw() {
+
     }
     PVector movement = new PVector(0,0,0);
     public void keyPressed() {
