@@ -22,7 +22,8 @@ public class MapManager implements GameObject{
     }
 
     private void createMap(){
-
+        int startX = (int)(Math.random()*xSize);
+        int startY = (int)(Math.random()*ySize);
     }
 
     @Override

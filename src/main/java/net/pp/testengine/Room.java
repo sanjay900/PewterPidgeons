@@ -13,7 +13,7 @@ public class Room implements GameObject{
 
     @Override
     public void render(TestEngine engine) {
-    boolean canOccupy;
+    boolean isWall;
 
     public void draw(){
 
