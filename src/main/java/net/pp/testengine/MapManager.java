@@ -14,17 +14,19 @@ public class MapManager implements GameObject{
     private HashMap<Location,Room> roomMap = new HashMap<>();
     private int xSize;
     private int ySize;
+    private int zSize;
     @Getter
     private Location startLoc;
 
-    public MapManager(int xSize, int ySize){
+    public MapManager(int xSize, int ySize, int zSize){
         this.xSize = xSize;
         this.ySize = ySize;
-        MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize);
+        this.zSize = zSize;
+        MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize, zSize);
         startLoc = new Location(
                 // makes it so we're not on the
                 Math.max(1,(int)(Math.random()*xSize)),
-                Math.max(1,(int)(Math.random()*ySize)));
+                Math.max(1,(int)(Math.random()*ySize)),0);
 
         mg.createMap(startLoc);
     }
@@ -43,4 +45,11 @@ public class MapManager implements GameObject{
         return roomMap.get(newLocation);
     }
 
+    public boolean isWall(Location location) {
+            return roomMap.containsKey(location) && roomMap.get(location).isWall;
+    }
+
+    public boolean isStair(Location location) {
+        return roomMap.containsKey(location) && roomMap.get(location).isStair;
+    }
 }

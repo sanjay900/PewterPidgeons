@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class MapGenerator {
     private MapManager manager;
     private HashMap<Location, Room> roomMap;
-    private int xSize, ySize;
+    private int xSize, ySize, zSize;
 
     public void createMap(Location startLoc){
         // from a room (on init: random)
@@ -21,9 +21,21 @@ public class MapGenerator {
         // a random number of them will be walls
         // otherwise they are notwalls - able to be moved into
         // then recurse
-        System.out.println("about to gen room");
         createRoom(startLoc);
         generateRoom(startLoc);
+        Location stair = generateStaircase(startLoc);
+        if (stair == null) return;
+        createMap(stair.getRelative(Direction.UP));
+    }
+
+    private Location generateStaircase(Location startLoc) {
+        if (startLoc.getZ() == zSize) return null;
+        Location loc = startLoc;
+        while (loc.equals(startLoc) || roomMap.get(loc).isWall || roomMap.get(loc.getRelative(Direction.EAST)).isWall) {
+            loc = new Location((int)(Math.random()*xSize),(int)(Math.random()*ySize),startLoc.getZ());
+        }
+        roomMap.get(loc).isStair = true;
+        return loc;
     }
 
     private void generateRoom(Location loc){

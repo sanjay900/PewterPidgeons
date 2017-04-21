@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class Location {
-    private final int x,y;
+    private final int x,y,z;
 
     @Override
     public boolean equals(Object o) {
@@ -17,19 +17,17 @@ public class Location {
 
         Location location = (Location) o;
 
-        return x == location.x && y == location.y;
+        return x == location.x && y == location.y && z == location.z;
     }
 
     @Override
     public int hashCode() {
         int result = x;
         result = 31 * result + y;
+        result = 31 * result + z;
         return result;
     }
-    public Location add(int x, int y) {
-        return new Location(this.x+x,this.y+y);
-    }
     public Location getRelative(Direction dir) {
-        return new Location(x+dir.getX(),y+dir.getY());
+        return new Location(x+dir.getX(),y+dir.getY(),z+dir.getZ());
     }
 }

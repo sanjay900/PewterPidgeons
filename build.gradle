@@ -16,4 +16,5 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile 'net.tangentmc:ProcessingUtils:1.2'
     compileOnly "org.projectlombok:lombok:1.16.16"
+    compile 'nz.ac.victoria.ecs:ecs:100'
 }
