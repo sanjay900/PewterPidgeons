@@ -9,7 +9,7 @@ import lombok.Getter;
  * Creates a room[][] roomArray
  * render calls are piped through here
  */
-public class MapManager {
+public class MapManager implements GameObject{
     @Getter
     private Room[][] roomArray = new Room[][]{};
     private int xSize;
@@ -25,10 +25,19 @@ public class MapManager {
 
     }
 
-    private void draw(){
+    @Override
+    public void update() {
         for(int i=0; i<xSize; i++){
             for(int j=0; j<ySize; j++){
-                roomArray[i][j].draw();
+                roomArray[i][j].update();
+            }
+        }
+    }
+
+    public void render(TestEngine engine){
+        for(int i=0; i<xSize; i++){
+            for(int j=0; j<ySize; j++){
+                roomArray[i][j].render(engine);
             }
         }
     }
