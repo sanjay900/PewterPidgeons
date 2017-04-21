@@ -4,7 +4,7 @@ import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 
 public class TestEngine extends PApplet {
-    MapManager manager = new MapManager(10,10);
+    MapManager manager = new MapManager(30,30);
     public static void main(String[] args) {
         ProcessingRunner.run(new TestEngine());
     }

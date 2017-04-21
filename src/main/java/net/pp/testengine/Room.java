@@ -14,6 +14,8 @@ public class Room implements GameObject{
     private MapManager manager;
     Location position;
     public static final int ROOM_SIZE = 100;
+    public boolean isWall;
+
     @Override
     public void update() {
 
@@ -24,7 +26,8 @@ public class Room implements GameObject{
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,position.getY()*Room.ROOM_SIZE);
         Random random = new Random();
-        engine.fill(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+        engine.fill(0, 0,random.nextInt(255));
+        if (isWall)
         engine.box(ROOM_SIZE);
         engine.popMatrix();
     }
