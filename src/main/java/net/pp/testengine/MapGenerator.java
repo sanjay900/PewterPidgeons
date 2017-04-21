@@ -10,6 +10,7 @@ import java.util.HashMap;
  */
 @AllArgsConstructor
 public class MapGenerator {
+    private TestEngine te;
     private MapManager manager;
     private HashMap<Location, Room> roomMap;
     private int xSize, ySize, zSize;
@@ -32,7 +33,7 @@ public class MapGenerator {
         if (startLoc.getZ() == zSize) return null;
         Location loc = startLoc;
         while (loc.equals(startLoc) || roomMap.get(loc).isWall || roomMap.get(loc.getRelative(Direction.EAST)).isWall) {
-            loc = new Location((int)(Math.random()*xSize),(int)(Math.random()*ySize),startLoc.getZ());
+            loc = new Location((int)(te.random(xSize)),(int)(te.random(ySize)),startLoc.getZ());
         }
         roomMap.get(loc).isStair = true;
         return loc;
@@ -45,7 +46,7 @@ public class MapGenerator {
         checkAdj(adjRoomList, loc.getRelative(Direction.EAST));
         checkAdj(adjRoomList, loc.getRelative(Direction.SOUTH));
         checkAdj(adjRoomList, loc.getRelative(Direction.WEST));
-        int numWalls = (int)(Math.random()*adjRoomList.size());
+        int numWalls = (int)(te.random(adjRoomList.size()));
 
         for(int i=0; i<adjRoomList.size(); i++){
             if(i<numWalls){

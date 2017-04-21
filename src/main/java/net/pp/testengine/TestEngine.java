@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import java.util.Arrays;
 
 public class TestEngine extends PApplet {
-    MapManager manager = new MapManager(20,20,2);
+    MapManager manager;
     Player player;
     KeyInput input = new KeyInput();
     TestWindow window;
@@ -21,6 +21,8 @@ public class TestEngine extends PApplet {
     }
     public void settings() {
         size(800, 600, P3D);
+        randomSeed(31);
+        manager = new MapManager(this,20,20,2);
     }
 
     public void setup() {
