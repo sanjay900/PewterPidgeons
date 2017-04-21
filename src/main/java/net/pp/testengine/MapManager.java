@@ -21,7 +21,7 @@ public class MapManager implements GameObject{
         this.xSize = xSize;
         this.ySize = ySize;
         MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize);
-        Location startLoc = new Location(
+        startLoc = new Location(
                 (int)(Math.random()*xSize),
                 (int)(Math.random()*ySize));
         mg.createMap(startLoc);
