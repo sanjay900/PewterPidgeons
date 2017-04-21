@@ -5,4 +5,8 @@ package net.pp.testengine;
  * TODO everything
  */
 public class Room {
+
+    public void draw(){
+
+    }
 }
