@@ -23,10 +23,16 @@ public class MapManager implements GameObject{
         MapGenerator mg = new MapGenerator(this, roomMap, xSize, ySize);
         startLoc = new Location(
                 // makes it so we're not on the
-                Math.max(1,(int)(Math.random()*xSize)),
-                Math.max(1,(int)(Math.random()*ySize)));
+                Math.max(2,(int)(Math.random()*xSize)),
+                Math.max(2,(int)(Math.random()*ySize)));
 
         mg.createMap(startLoc);
+        while (isWall(startLoc)) {
+            startLoc = new Location(
+                    // makes it so we're not on the
+                    Math.max(2,(int)(Math.random()*xSize)),
+                    Math.max(2,(int)(Math.random()*ySize)));
+        }
     }
 
     @Override

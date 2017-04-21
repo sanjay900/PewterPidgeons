@@ -25,10 +25,9 @@ public class Room implements GameObject{
     public void render(TestEngine engine) {
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,0,position.getY()*Room.ROOM_SIZE);
-        Random random = new Random();
-        engine.fill(0, 0, 255);
+        engine.fill(128, 128, 128);
         if (isWall)
-        engine.box(ROOM_SIZE);
+            engine.box(ROOM_SIZE);
         engine.popMatrix();
     }
 }

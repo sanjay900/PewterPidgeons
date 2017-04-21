@@ -22,7 +22,10 @@ public class Player implements GameObject{
     }
     public void move(PVector movement, MapManager manager) {
         PVector lastLoc = camPos.copy();
-        PVector mvmt = movement.copy().rotate(-camRot).mult(moveAmount);
+        movement = movement.copy();
+        camRot+=movement.x/1000;
+        movement.x = 0;
+        PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
         if (manager.isWall(getLocation())) {
             camPos = lastLoc;
@@ -36,9 +39,9 @@ public class Player implements GameObject{
     }
     @Override
     public void render(TestEngine engine) {
-        float deltaX = engine.mouseX-engine.width/2;
-        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
-        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
+//        float deltaX = engine.mouseX-engine.width/2;
+//        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
+//        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
 
         // set up the camera (by doing reverse transformations)
         engine.resetMatrix();
