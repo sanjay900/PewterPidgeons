@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class TestEngine extends PApplet {
+
     MapManager manager;
     HashMap<String, Player> playerMap = new HashMap<>();
     Player player;
@@ -45,7 +46,7 @@ public class TestEngine extends PApplet {
         player = new Player(manager.getStartLoc());
         playerMap.put(player.getPlayerName(), player);
         stickerList = new ArrayList<>();
-        miniMap = new MiniMap(this, width-100, height-100);
+        miniMap = new MiniMap(this);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
 
