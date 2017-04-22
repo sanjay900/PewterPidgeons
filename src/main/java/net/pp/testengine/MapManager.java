@@ -1,8 +1,6 @@
 package net.pp.testengine;
 
 import lombok.Getter;
-import processing.core.PApplet;
-import processing.core.PGraphics;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -48,19 +46,6 @@ public class MapManager implements GameObject{
         });
     }
 
-    public void offscreenCheck(TestEngine engine, PGraphics offscreen){
-        HashMap<Color,Room> colorMap = new HashMap<>();
-        offscreen.beginDraw();
-        offscreen.clear();
-        engine.player.offscreenTransform(engine, offscreen);
-        roomMap.values().forEach(r -> {
-            Color c = r.renderOffscreen(engine,offscreen);
-            if (c != null)
-                colorMap.put(c,r);
-        });
-        offscreen.endDraw();
-        engine.selected = colorMap.get(new Color(offscreen.get(engine.mouseX,engine.mouseY)));
-    }
 
     public boolean isWall(Location location) {
         return roomMap.containsKey(location) && roomMap.get(location).isWall;

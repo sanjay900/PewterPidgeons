@@ -2,11 +2,9 @@ package net.pp.testengine;
 
 import lombok.Getter;
 import lombok.Setter;
-import processing.core.PGraphics;
-import lombok.Getter;
-import processing.core.PApplet;
+import net.tangentmc.model.MD2.Vertex;
+import processing.core.PConstants;
 import processing.core.PVector;
-import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.*;
 
@@ -17,14 +15,21 @@ public class Player implements GameObject {
         camPos = new PVector(-start.getX(), -start.getY()).mult(Room.ROOM_SIZE);
     }
 
+    public Player(String nameIn, PVector startPos){
+        playerName = nameIn;
+        camPos = startPos;
+        isLocal = false;
+    }
+    boolean isLocal = true;
     // variables for Dom's cameraw
+
     @Getter
     @Setter
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
     @Getter
     @Setter
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
-    private float moveAmount = 0.1f;
+    private float moveAmount = 0.5f;
     private float rotSpeed = 1.2f;
     @Getter
     @Setter
@@ -39,7 +44,7 @@ public class Player implements GameObject {
         PVector lastLoc = camPos.copy();
         Location lastLoca = getLocation();
         movement = movement.copy();
-        camRot += movement.x / 400;
+        camRot += movement.x / 300;
         movement.x = 0;
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
@@ -76,19 +81,21 @@ public class Player implements GameObject {
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
+        if (isLocal) {
+            // set up the camera (by doing reverse transformations)
+            engine.resetMatrix();
+            engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
+            engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
+            engine.translate(camPos.x, camPos.z, camPos.y);
+        } else if (blueBounds != null){
+            engine.pushMatrix();
+            engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
+            engine.rotateX(PConstants.HALF_PI);
+            engine.scale(5);
+            Models.SCORPION.model.drawModel(blueBounds,engine);
+            engine.popMatrix();
 
-        // set up the camera (by doing reverse transformations)
-        engine.resetMatrix();
-        engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
-        engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
-        engine.translate(camPos.x, camPos.z, camPos.y);
-    }
-
-    public void offscreenTransform(TestEngine engine, PGraphics offscreen) {
-        offscreen.resetMatrix();
-        offscreen.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);
-        offscreen.rotateY(-camRot);
-        offscreen.translate(camPos.x, camPos.z, camPos.y);
+        }
     }
 
     public PVector getRelative(Player p) {

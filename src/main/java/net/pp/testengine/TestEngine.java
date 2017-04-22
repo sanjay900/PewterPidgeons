@@ -2,11 +2,13 @@ package net.pp.testengine;
 
 
 import com.jogamp.newt.opengl.GLWindow;
+import com.jogamp.opengl.GL;
 import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PGraphics;
+import processing.core.PVector;
+import processing.opengl.PGraphics3D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,21 +17,30 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class TestEngine extends PApplet {
+
     MapManager manager;
-    HashMap<String, Player> playerMap = new HashMap<>();
-    Player player;
+    HashMap<String, Player> playerMap;
+    HashMap<Integer, Projectile> projectileMap;
+    Player player = new Player("",new PVector(0,0,0));
     MiniMap miniMap;
     KeyInput input = new KeyInput();
     TestWindow window;
     public static final String GAME_NAME = "%insert_title%";
     public Room selected;
     ArrayList<Sticker> stickerList;
+    ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
 
     public static void main(String[] args) {
-        ProcessingRunner.run(new TestEngine());
+        new TestEngine();
     }
     public TestEngine() {
+        playerMap = new HashMap<>();
+        projectileMap = new HashMap<>();
         window = new TestWindow(this);
+
+    }
+    public void bootProcessing() {
+        ProcessingRunner.run(this);
     }
     public void settings() {
         size(800, 600, P3D);
@@ -42,26 +53,33 @@ public class TestEngine extends PApplet {
         player = new Player(manager.getStartLoc());
         playerMap.put(player.getPlayerName(), player);
         stickerList = new ArrayList<>();
-        miniMap = new MiniMap(this, width-100, height-100);
+        miniMap = new MiniMap(this);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
+
+        ((GLWindow)getSurface().getNative()).getGL().glEnable(GL.GL_CULL_FACE);
     }
     public void draw() {
-        System.out.println(frameRate);
+        noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
         player.move(input.getMotion(),manager);
+        new ArrayList<>(projectileMap.values()).forEach(Projectile::update);
         clear();
-        player.render(this,blueBounds);
+        new ArrayList<>(playerMap.values()).forEach(p -> p.render(this,blueBounds));
+        s.captureViewMatrix((PGraphics3D) this.g);
         manager.render(this,blueBounds);
-
+        new ArrayList<>(projectileMap.values()).forEach(p -> p.render(this,blueBounds));
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
 
         miniMap.render(player);
-        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
-        stickerList.forEach(s -> s.render(this));
+//        translate(blueBounds.x,blueBounds.y);
+//        rect(0,0,blueBounds.width,blueBounds.height);
+
+//        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
+//        stickerList.forEach(s -> s.render(this));
     }
 
     /**
@@ -83,7 +101,7 @@ public class TestEngine extends PApplet {
         y5 -= glbb.getY();
         x6 -= glbb.getX();
         y6 -= glbb.getY();
-        if (x5 > x6 || y5 > y6) return null;
+        if (x5 > x6 || y5 > y6) return new Rectangle(-Integer.MAX_VALUE,-Integer.MAX_VALUE,0,0);
         return new Rectangle(x5,y5,x6-x5,y6-y5);
     }
 
@@ -97,10 +115,10 @@ public class TestEngine extends PApplet {
     }
     @Override
     public void mouseClicked(){
-        PGraphics offscreen = createGraphics(width,height, P3D);
-        manager.offscreenCheck(this, offscreen);
-        offscreen.dispose();
         stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
+        s.calculatePickPoints(mouseX,height-mouseY);
+        Projectile f = new Projectile(s.ptStartPos.copy(),s.ptEndPos.copy());
+        projectileMap.put(f.getId(),f);
     }
 }
 

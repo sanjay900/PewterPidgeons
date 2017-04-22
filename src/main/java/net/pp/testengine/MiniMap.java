@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MiniMap {
     TestEngine te;
-    int x, y;
 
     public void render(Player player){
         te.pushMatrix();
@@ -16,11 +15,11 @@ public class MiniMap {
         te.noFill();
         te.stroke(0);
 
-        te.ellipse(x,y,50,50);
-        te.ellipse(x,y,100,100);
-        te.ellipse(x,y,200,200);
+        te.translate(te.width-100,te.height-100);
+        te.ellipse(0,0,50,50);
+        te.ellipse(0,0,100,100);
+        te.ellipse(0,0,200,200);
 
-        te.translate(x,y);
         te.rotate(player.getCamRot()-(float)(Math.PI));
         for(Player p : te.playerMap.values()){
             if(p.equals(player)){
