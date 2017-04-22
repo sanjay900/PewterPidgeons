@@ -7,6 +7,7 @@ import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
+import processing.opengl.PGraphicsOpenGL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,6 +93,11 @@ public class TestEngine extends PApplet {
     @Override
     public void keyReleased() {
         input.keyReleased(key);
+    }
+    @Override
+    public void mouseClicked(){
+        manager.offscreenCheck(this);
+        System.out.println(selected);
     }
 
 }

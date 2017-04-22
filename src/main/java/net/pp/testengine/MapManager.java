@@ -45,6 +45,12 @@ public class MapManager implements GameObject{
     }
 
     public void render(TestEngine engine, Rectangle blueBounds){
+        roomMap.values().forEach(r -> {
+            r.render(engine, blueBounds);
+        });
+    }
+
+    public void offscreenCheck(TestEngine engine){
         HashMap<Color,Room> colorMap = new HashMap<>();
         offscreen.beginDraw();
         offscreen.clear();
@@ -55,9 +61,6 @@ public class MapManager implements GameObject{
                 colorMap.put(c,r);
         });
         offscreen.endDraw();
-        roomMap.values().forEach(r -> {
-            r.render(engine, blueBounds);
-        });
         engine.selected = colorMap.get(new Color(offscreen.get(engine.mouseX,engine.mouseY)));
     }
 

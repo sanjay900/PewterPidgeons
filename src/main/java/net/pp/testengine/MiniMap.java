@@ -11,7 +11,6 @@ public class MiniMap {
     int x, y;
 
     public void render(Player player){
-        System.out.println("rendering minimap");
         te.ellipseMode(te.CENTER);
         te.noFill();
         te.stroke(0);
