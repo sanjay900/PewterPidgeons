@@ -10,6 +10,7 @@ public class Projectile implements GameObject {
     PVector motion;
     PVector position;
     boolean isRemote = false;
+    boolean dead = false;
 
     public Projectile(PVector start, PVector end) {
         this.motion = PVector.sub(end,start).normalize().mult(15);
@@ -25,18 +26,22 @@ public class Projectile implements GameObject {
     }
     @Override
     public void update() {
+        if (dead) return;
         position.add(motion);
     }
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
+        if (dead) return;
         if (engine.manager.isWall(new Location(position))) {
-            engine.projectileMap.remove(id);
+            dead = true;
             return;
         }
         for (Player player : engine.playerMap.values()) {
             if (player.collides(this)) {
-                System.out.println("Collide and shit");
+                player.hit();
+                dead = true;
+                return;
             }
         }
         engine.pushMatrix();

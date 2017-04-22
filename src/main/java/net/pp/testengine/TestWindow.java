@@ -33,8 +33,8 @@ public class TestWindow {
         startGame();
         new Client(engine).connect(hostname);
     }
-    private void doHit() {
-        for (int i = 0; i < 5; i++) {
+    void doHit() {
+        for (int i = 0; i < 3; i++) {
             UI.getFrame().setLocation(UI.getFrame().getLocation().x+50, UI.getFrame().getLocation().y+50);
             UI.sleep(100);
             UI.getFrame().setLocation(UI.getFrame().getLocation().x-50, UI.getFrame().getLocation().y-50);

@@ -69,12 +69,17 @@ public class Server {
                 if (p.equals(engine.player)) {
                     //Read in the data anyways
                     new PVector(in.readFloat(),in.readFloat(),in.readFloat());
-                   in.readFloat();
+                    in.readFloat();
+                    if (in.readBoolean()) {
+                        engine.window.doHit();
+                    }
                     return;
                 }
                 p.setCamPos(new PVector(in.readFloat(),in.readFloat(),in.readFloat()));
+                in.readBoolean();
             } else {
                 engine.playerMap.put(s, p=new Player(s,new PVector(in.readFloat(),in.readFloat(),in.readFloat())));
+                in.readBoolean();
             }
             p.setCamRot(in.readFloat());
         } else if (magic.startsWith("BULLET")) {
@@ -85,6 +90,9 @@ public class Server {
                 engine.projectileMap.get(id).updateWith(mot,pos);
             } else {
                 engine.projectileMap.put(id,new Projectile(id,mot,pos));
+            }
+            if (in.readBoolean()) {
+                engine.projectileMap.get(id).dead = true;
             }
         }
     }
@@ -97,6 +105,8 @@ public class Server {
             out.writeFloat(p.getCamPos().y);
             out.writeFloat(p.getCamPos().z);
             out.writeFloat(p.getCamRot());
+            out.writeBoolean(p.hit);
+            p.hit = false;
         }
         for (Projectile p : engine.projectileMap.values()) {
             out.writeUTF("BULLET");
@@ -108,6 +118,7 @@ public class Server {
             out.writeFloat(p.getPosition().x);
             out.writeFloat(p.getPosition().y);
             out.writeFloat(p.getPosition().z);
+            out.writeBoolean(p.dead);
         }
     }
 }

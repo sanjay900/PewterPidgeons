@@ -90,14 +90,13 @@ public class Player implements GameObject {
             engine.translate(camPos.x, camPos.z, camPos.y);
             camRotation = new PVector();
             camRotation = engine.getMatrix().mult(camRotation,null);
-        } else if (blueBounds != null){
+        } else if (blueBounds.width > 0){
             engine.pushMatrix();
             engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
             engine.rotateX(PConstants.HALF_PI);
             engine.scale(5);
             Models.SCORPION.model.drawModel(blueBounds,engine);
             engine.popMatrix();
-
         }
     }
 
@@ -108,6 +107,10 @@ public class Player implements GameObject {
     }
 
     public boolean collides(Projectile projectile) {
-        return projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z,-camPos.y)) < 5;
+        return projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y)) < 25;
+    }
+    boolean hit = false;
+    public void hit() {
+        this.hit = true;
     }
 }
