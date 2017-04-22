@@ -49,14 +49,14 @@ public class MapManager implements GameObject{
         offscreen.beginDraw();
         offscreen.clear();
         engine.player.offscreenTransform(engine);
-        offscreen.endDraw();
         roomMap.values().forEach(r -> {
-            r.render(engine, blueBounds);
-            offscreen.beginDraw();
             Color c = r.renderOffscreen(engine,offscreen);
             if (c != null)
                 colorMap.put(c,r);
-            offscreen.endDraw();
+        });
+        offscreen.endDraw();
+        roomMap.values().forEach(r -> {
+            r.render(engine, blueBounds);
         });
         engine.selected = colorMap.get(new Color(offscreen.get(engine.mouseX,engine.mouseY)));
     }

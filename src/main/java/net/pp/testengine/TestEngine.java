@@ -47,6 +47,7 @@ public class TestEngine extends PApplet {
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
     }
     public void draw() {
+        System.out.println(frameRate);
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
