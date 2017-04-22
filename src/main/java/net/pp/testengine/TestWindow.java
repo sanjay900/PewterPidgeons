@@ -24,14 +24,14 @@ public class TestWindow {
     }
 
     private void startServer() {
-        new Server().connect();
         startGame();
+        new Server().connect();
     }
 
 
     private void join() {
-        new Client(engine).connect(hostname);
         startGame();
+        new Client(engine).connect(hostname);
     }
 
     private void startGame() {
