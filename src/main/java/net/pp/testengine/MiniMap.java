@@ -22,7 +22,7 @@ public class MiniMap {
 
         te.translate(x,y);
         te.rotate(player.getCamRot()-(float)(Math.PI));
-        for(Player p : te.playerList){
+        for(Player p : te.playerMap.values()){
             if(p.equals(player)){
                 te.fill(255,0,0);
             } else {
