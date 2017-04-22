@@ -43,13 +43,21 @@ public class Client {
                         String[] starter = in.readLine().split(",");
                         if(starter[0].equals("MAGIC")){
                             String s = starter[1];
-                            if(engine.playerMap.containsKey(s) && !engine.player.getPlayerName().equals(s)){
-                                Player p = engine.playerMap.get(s);
-                                p.setCamPos(new PVector(
+                            if(engine.playerMap.containsKey(s)) {
+                                if (!engine.player.getPlayerName().equals(s)) {
+                                    Player p = engine.playerMap.get(s);
+                                    p.setCamPos(new PVector(
+                                            Float.parseFloat(starter[2]),
+                                            Float.parseFloat(starter[3]),
+                                            Float.parseFloat(starter[4])));
+                                    p.setCamRot(Float.parseFloat(starter[5]));
+                                }
+                            } else {
+                                engine.playerMap.put(s, new Player(s, new PVector(
                                         Float.parseFloat(starter[2]),
                                         Float.parseFloat(starter[3]),
-                                        Float.parseFloat(starter[4])));
-                                p.setCamRot(Float.parseFloat(starter[5]));
+                                        Float.parseFloat(starter[4]))));
+                                engine.playerMap.get(s).setCamRot(Float.parseFloat(starter[5]));
                             }
                         }
                     }

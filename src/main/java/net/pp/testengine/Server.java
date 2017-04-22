@@ -74,6 +74,12 @@ public class Server {
                         Float.parseFloat(starter[3]),
                         Float.parseFloat(starter[4])));
                 p.setCamRot(Float.parseFloat(starter[5]));
+            } else {
+                engine.playerMap.put(s, new Player(s, new PVector(
+                        Float.parseFloat(starter[2]),
+                        Float.parseFloat(starter[3]),
+                        Float.parseFloat(starter[4]))));
+                engine.playerMap.get(s).setCamRot(Float.parseFloat(starter[5]));
             }
         }
     }

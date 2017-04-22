@@ -16,6 +16,11 @@ public class Player implements GameObject {
         camPos = new PVector(-start.getX(), -start.getY()).mult(Room.ROOM_SIZE);
     }
 
+    public Player(String nameIn, PVector startPos){
+        playerName = nameIn;
+        camPos = startPos;
+    }
+
     // variables for Dom's cameraw
 
     @Getter
