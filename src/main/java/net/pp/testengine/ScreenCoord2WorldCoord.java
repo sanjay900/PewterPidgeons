@@ -1,9 +1,12 @@
 package net.pp.testengine;
 
 import processing.core.PApplet;
+import processing.core.PMatrix;
 import processing.core.PMatrix3D;
 import processing.core.PVector;
+import processing.opengl.PGL;
 import processing.opengl.PGraphics3D;
+import processing.opengl.PGraphicsOpenGL;
 
 public class ScreenCoord2WorldCoord
 {
@@ -110,5 +113,63 @@ public class ScreenCoord2WorldCoord
         if (!gluUnProject((float)x, (float)y, 1.0f, ptEndPos)) m_bValid = false;
         return m_bValid;
     }
+    public float screenXImpl(float x, float y, float z, TestEngine engine) {
+        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview;
+        float ax =
+                modelview.m00*x + modelview.m01*y + modelview.m02*z + modelview.m03;
+        float ay =
+                modelview.m10*x + modelview.m11*y + modelview.m12*z + modelview.m13;
+        float az =
+                modelview.m20*x + modelview.m21*y + modelview.m22*z + modelview.m23;
+        float aw =
+                modelview.m30*x + modelview.m31*y + modelview.m32*z + modelview.m33;
+        return screenXImpl(ax, ay, az, aw, engine);
+    }
 
+
+    public float screenXImpl(float x, float y, float z, float w, TestEngine engine) {
+        PMatrix3D projection = ((PGraphics3D)engine.g).projection;
+        float ox =
+                projection.m00*x + projection.m01*y + projection.m02*z + projection.m03*w;
+        float ow =
+                projection.m30*x + projection.m31*y + projection.m32*z + projection.m33*w;
+
+        if (nonZero(ow)) {
+            ox /= ow;
+        }
+        float sx = engine.width * (1 + ox) / 2.0f;
+        return sx;
+    }
+    public float screenYImpl(float x, float y, float z, TestEngine engine) {
+        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview;
+        float ax =
+                modelview.m00*x + modelview.m01*y + modelview.m02*z + modelview.m03;
+        float ay =
+                modelview.m10*x + modelview.m11*y + modelview.m12*z + modelview.m13;
+        float az =
+                modelview.m20*x + modelview.m21*y + modelview.m22*z + modelview.m23;
+        float aw =
+                modelview.m30*x + modelview.m31*y + modelview.m32*z + modelview.m33;
+        return screenYImpl(ax, ay, az, aw, engine);
+    }
+
+
+    public float screenYImpl(float x, float y, float z, float w, TestEngine engine) {
+        PMatrix3D projection = ((PGraphics3D)engine.g).projection;
+        float oy =
+                projection.m10*x + projection.m11*y + projection.m12*z + projection.m13*w;
+        float ow =
+                projection.m30*x + projection.m31*y + projection.m32*z + projection.m33*w;
+
+        if (nonZero(ow)) {
+            oy /= ow;
+        }
+        float sy = engine.height * (1 + oy) / 2.0f;
+        // Turning value upside down because of Processing's inverted Y axis.
+        sy = engine.height - sy;
+        return sy;
+    }
+    protected static boolean nonZero(float a) {
+        return Float.MIN_VALUE <= Math.abs(a);
+    }
 }

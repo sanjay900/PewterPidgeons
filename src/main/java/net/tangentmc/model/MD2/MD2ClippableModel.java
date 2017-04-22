@@ -5,6 +5,7 @@ package net.tangentmc.model.MD2;
 // (powered by Fernflower decompiler)
 //
 
+import net.pp.testengine.ScreenCoord2WorldCoord;
 import net.pp.testengine.TestEngine;
 import processing.core.PApplet;
 import processing.core.PImage;
@@ -82,6 +83,7 @@ public class MD2ClippableModel {
     }
 
     private void renderFrame(Rectangle clipBounds, TestEngine engine) {
+        ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
         Vertex[] vertlist = this.interpolate();
         int triangle;
         short[][] var2 = this.tris;
@@ -94,8 +96,8 @@ public class MD2ClippableModel {
             if (clipBounds != null) {
                 for (int i = 0; i < 3; ++i) {
                     int index = tri[i];
-                    int x = (int) engine.screenX(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
-                    int y = (int) engine.screenY(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
+                    int x = (int) s.screenXImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
+                    int y = (int) s.screenYImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
                     if (!clipBounds.contains(new Point(x, y))) continue nextCmd;
                 }
             }
