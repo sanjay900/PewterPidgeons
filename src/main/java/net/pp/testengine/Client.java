@@ -37,7 +37,9 @@ public class Client {
             }).start();
             new Thread(()->{
                 try {
+                    //engine.randomSeed(Long.parseLong(in.readLine())));
                     while(kkSocket.isConnected()) {
+
                         String[] starter = in.readLine().split(",");
                         if(starter[0].equals("MAGIC")){
                             String s = starter[1];
