@@ -36,6 +36,7 @@ public class TestWindow {
 
     private void startGame() {
         engine.bootProcessing();
+        UI.addButton("test",()->{}).getParent().removeAll();
         JMenuBar bar = UI.getFrame().getJMenuBar();
         bar.remove(0);
         //Create a JMenuItem that looks like a title bar since we have to get rid of the existing one.
