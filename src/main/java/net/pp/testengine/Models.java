@@ -33,11 +33,9 @@ public enum Models {
         }
     }
     public void render(TestEngine engine, float height, float scale) {
-        if(!outline) engine.noStroke();
         engine.translate(0, -height+Room.ROOM_SIZE/2,0);
         engine.rotateX(PConstants.HALF_PI);
         engine.scale(scale);
         model.drawModel();
-        if(!outline) engine.stroke(0);
     }
 }

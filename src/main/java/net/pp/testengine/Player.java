@@ -1,11 +1,7 @@
 package net.pp.testengine;
 
 import lombok.Getter;
-import processing.core.PGraphics;
-import lombok.Getter;
-import processing.core.PApplet;
 import processing.core.PVector;
-import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.*;
 
@@ -17,10 +13,11 @@ public class Player implements GameObject {
     }
 
     // variables for Dom's cameraw
+
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
     @Getter
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
-    private float moveAmount = 0.1f;
+    private float moveAmount = 0.5f;
     private float rotSpeed = 1.2f;
 
     @Override
@@ -32,7 +29,7 @@ public class Player implements GameObject {
         PVector lastLoc = camPos.copy();
         Location lastLoca = getLocation();
         movement = movement.copy();
-        camRot += movement.x / 400;
+        camRot += movement.x / 300;
         movement.x = 0;
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
@@ -77,12 +74,6 @@ public class Player implements GameObject {
         engine.translate(camPos.x, camPos.z, camPos.y);
     }
 
-    public void offscreenTransform(TestEngine engine, PGraphics offscreen) {
-        offscreen.resetMatrix();
-        offscreen.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);
-        offscreen.rotateY(-camRot);
-        offscreen.translate(camPos.x, camPos.z, camPos.y);
-    }
 
     public PVector getRelative(Player p) {
         return new PVector(

@@ -2,11 +2,12 @@ package net.pp.testengine;
 
 
 import com.jogamp.newt.opengl.GLWindow;
+import com.jogamp.opengl.GL;
 import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PGraphics;
+import processing.opengl.PGraphics3D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,8 @@ public class TestEngine extends PApplet {
     public static final String GAME_NAME = "%insert_title%";
     public Room selected;
     ArrayList<Sticker> stickerList;
+    ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
+    public ArrayList<Projectile> projectiles = new ArrayList<>();
 
     public static void main(String[] args) {
         ProcessingRunner.run(new TestEngine());
@@ -45,17 +48,22 @@ public class TestEngine extends PApplet {
         miniMap = new MiniMap(this, width-100, height-100);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
+
+        ((GLWindow)getSurface().getNative()).getGL().glEnable(GL.GL_CULL_FACE);
     }
     public void draw() {
         System.out.println(frameRate);
+        noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
         player.move(input.getMotion(),manager);
+        projectiles.forEach(Projectile::update);
         clear();
         player.render(this,blueBounds);
+        s.captureViewMatrix((PGraphics3D) this.g);
         manager.render(this,blueBounds);
-
+        projectiles.forEach(p -> p.render(this,blueBounds));
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
 
@@ -97,10 +105,9 @@ public class TestEngine extends PApplet {
     }
     @Override
     public void mouseClicked(){
-        PGraphics offscreen = createGraphics(width,height, P3D);
-        manager.offscreenCheck(this, offscreen);
-        offscreen.dispose();
         stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
+        s.calculatePickPoints(mouseX,height-mouseY);
+        projectiles.add(new Projectile(s.ptStartPos.copy(),s.ptEndPos.copy()));
     }
 }
 
