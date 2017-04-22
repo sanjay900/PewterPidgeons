@@ -82,11 +82,13 @@ public class MD2ClippableModel {
             short[] tri = var2[var4];
             this.applet.beginShape(8);
             this.applet.texture(this.texture);
-            for (int i = 0; i < 3; ++i) {
-                int index = tri[i];
-                int x = (int) engine.screenX(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
-                int y = (int) engine.screenY(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
-                if (!clipBounds.contains(new Point(x,y))) continue nextCmd;
+            if (clipBounds != null) {
+                for (int i = 0; i < 3; ++i) {
+                    int index = tri[i];
+                    int x = (int) engine.screenX(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
+                    int y = (int) engine.screenY(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z);
+                    if (!clipBounds.contains(new Point(x, y))) continue nextCmd;
+                }
             }
             for(int i = 0; i < 3; ++i) {
                 float u = (float)this.uvs[tri[3 + i]][0] / (float)this.header.getSkinwidth();

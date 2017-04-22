@@ -72,6 +72,8 @@ public class TestEngine extends PApplet {
         hint(PConstants.DISABLE_DEPTH_TEST);
 
         miniMap.render(player);
+//        translate(blueBounds.x,blueBounds.y);
+//        rect(0,0,blueBounds.width,blueBounds.height);
 
 //        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
 //        stickerList.forEach(s -> s.render(this));

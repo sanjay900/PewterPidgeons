@@ -98,7 +98,10 @@
 
                 engine.endShape();
             } else if (isStair) {
-                //Models.STAIR.render(engine,0,5);
+                engine.translate(0,Room.ROOM_SIZE/2,0);
+                engine.rotateX(PConstants.HALF_PI);
+                engine.scale(5);
+                Models.STAIR.model.drawModel(null,engine);
             } else {
                 engine.fill(255, 255, 255);
                 engine.scale(Room.ROOM_SIZE/2);
