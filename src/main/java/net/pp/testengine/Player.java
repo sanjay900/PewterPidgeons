@@ -1,6 +1,10 @@
 package net.pp.testengine;
 
 import lombok.Getter;
+import lombok.Setter;
+import processing.core.PGraphics;
+import lombok.Getter;
+import processing.core.PApplet;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -14,11 +18,17 @@ public class Player implements GameObject {
 
     // variables for Dom's cameraw
 
+    @Getter
+    @Setter
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
     @Getter
+    @Setter
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
     private float moveAmount = 0.5f;
     private float rotSpeed = 1.2f;
+    @Getter
+    @Setter
+    private String playerName = String.valueOf(Math.random()*Integer.MAX_VALUE);
 
     @Override
     public void update() {

@@ -13,10 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class TestEngine extends PApplet {
     MapManager manager;
-    ArrayList<Player> playerList = new ArrayList<>();
+    HashMap<String, Player> playerMap = new HashMap<>();
     Player player;
     MiniMap miniMap;
     KeyInput input = new KeyInput();
@@ -42,8 +43,7 @@ public class TestEngine extends PApplet {
         frameRate(144);
         manager = new MapManager(this,30,30,2);
         player = new Player(manager.getStartLoc());
-        playerList.add(player);
-        playerList.add(new Player(new Location(0,0,0)));
+        playerMap.put(player.getPlayerName(), player);
         stickerList = new ArrayList<>();
         miniMap = new MiniMap(this, width-100, height-100);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
