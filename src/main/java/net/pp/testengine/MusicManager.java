@@ -14,10 +14,10 @@ public class MusicManager {
     //private Sound track3;
     //private Sound track4;
 
-    public MusicManager() {
+    public MusicManager(TestEngine engine) {
         try {
-            mainTrack = new Sound(new File("bgTrack3.wav"));
-            fightTrack = new Sound(new File("bgTrack1.wav"));
+            mainTrack = new Sound(engine.dataFile("bgTrack3.wav"));
+            fightTrack = new Sound(engine.dataFile("bgTrack1.wav"));
             /*track3 = new Sound(new File("bgTrack2.wav"));
             track4 = new Sound(new File("bgTrack4.wav"));*/
         } catch (IOException ex) {

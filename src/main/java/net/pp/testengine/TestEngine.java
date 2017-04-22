@@ -29,6 +29,7 @@ public class TestEngine extends PApplet {
     public Room selected;
     ArrayList<Sticker> stickerList;
     ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
+    MusicManager musicManager;
 
     public static void main(String[] args) {
         new TestEngine();
@@ -56,9 +57,10 @@ public class TestEngine extends PApplet {
         miniMap = new MiniMap(this);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
+        musicManager = new MusicManager(this);
+        musicManager.getMainTrack().play();
     }
     public void draw() {
-        System.out.println(frameRate);
         noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
