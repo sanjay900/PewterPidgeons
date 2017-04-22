@@ -45,22 +45,32 @@ public class TestEngine extends PApplet {
     }
     public void settings() {
         size(800, 600, P3D);
-        randomSeed(31);
     }
-
+    public void setSeed(long seed) {
+        randomSeed(seed);
+        readyForSeed = true;
+    }
     public void setup() {
         frameRate(144);
-        manager = new MapManager(this,30,30,2);
-        player = new Player(manager.getStartLoc());
-        playerMap.put(player.getPlayerName(), player);
-        stickerList = new ArrayList<>();
-        miniMap = new MiniMap(this);
-        Arrays.stream(Models.values()).forEach(m -> m.load(this));
-        ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
 //        musicManager = new MusicManager(this);
 //        musicManager.getMainTrack().play();
     }
+    boolean seedSet = false;
+    boolean readyForSeed = false;
     public void draw() {
+        if (!readyForSeed) {
+            return;
+        }
+        if (!seedSet) {
+            Arrays.stream(Models.values()).forEach(m -> m.load(this));
+            ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
+            manager = new MapManager(this,30,30,2);
+            player = new Player(manager.getStartLoc());
+            playerMap.put(player.getPlayerName(), player);
+            stickerList = new ArrayList<>();
+            miniMap = new MiniMap(this);
+            seedSet = true;
+        }
         noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);

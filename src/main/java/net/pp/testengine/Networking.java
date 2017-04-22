@@ -5,62 +5,74 @@ import processing.core.PVector;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Created by Klimpen on 22/04/2017.
  */
-public class Server {
-    public Server(TestEngine engine) {
+public class Networking {
+    public Networking(TestEngine engine) {
         this.engine = engine;
     }
 
     public static final int PORT_NUM = 12903;
     TestEngine engine;
 
-    public void connect() {
-
-        ServerSocket serverSocket;
+    public void connect(boolean isServer, String hostName) {
         try {
-            serverSocket = new ServerSocket(PORT_NUM);
-            new Thread(()->{
-                while(true) {
-                    try {
-                        Socket clientSocket = serverSocket.accept();
-                        new Thread(() -> {
-                            try {
-                                //out.println("31");
-                                while(clientSocket.isConnected()) {
-                                    serverWriter(new DataOutputStream(clientSocket.getOutputStream()));
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }).start();
-                        new Thread(() -> {
-                            try {
-                                while(clientSocket.isConnected()) {
-                                    serverListener(new DataInputStream(clientSocket.getInputStream()));
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }).start();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+            if (isServer) {
+                ServerSocket serverSocket;
+                serverSocket = new ServerSocket(PORT_NUM);
+                new Thread(() -> {
+                    while (true) {
+                        try {
+                            Socket clientSocket = serverSocket.accept();
 
+                            DataOutputStream ds = new DataOutputStream(clientSocket.getOutputStream());
+                            ds.writeUTF("SYNC");
+                            //TODO: Pick a random seed!
+                            ds.writeLong(31);
+                            engine.setSeed(31);
+                            createSocketThread(clientSocket, ds);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+            } else {
+                Socket clientSocket = new Socket(hostName, Networking.PORT_NUM);
+                createSocketThread(clientSocket,new DataOutputStream(clientSocket.getOutputStream()));
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    public void serverListener(DataInputStream in) throws IOException{
+    }
+    public void createSocketThread(Socket socket,DataOutputStream ds) {
+        new Thread(() -> {
+            try {
+                while(socket.isConnected()) {
+                    socketSender(ds);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        new Thread(() -> {
+            try {
+                while(socket.isConnected()) {
+                    socketListener(new DataInputStream(socket.getInputStream()));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
+    public void socketListener(DataInputStream in) throws IOException{
         String magic = in.readUTF();
+        if (magic.startsWith("SYNC")) {
+            engine.setSeed(in.readLong());
+        }
         if(magic.startsWith("MAGIC")){
             String s = in.readUTF();
             Player p;
@@ -97,7 +109,7 @@ public class Server {
         }
     }
 
-    public void serverWriter(DataOutputStream out) throws IOException{
+    public void socketSender(DataOutputStream out) throws IOException{
         for(Player p : engine.playerMap.values()){
             out.writeUTF("MAGIC");
             out.writeUTF(p.getPlayerName());

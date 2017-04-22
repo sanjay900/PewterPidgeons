@@ -18,20 +18,20 @@ public class TestWindow {
         UI.drawString("<-- Click the buttons to the side to join / start a game!",150,40);
         UI.drawString("Then this window can be used to interact with the game.",150,60);
         UI.getFrame().setAlwaysOnTop(true);
-        UI.addButton("Join Server",this::join);
-        UI.addTextField("Hostname",name -> hostname = name);
         UI.addButton("Start Server",this::startServer);
+        UI.addTextField("Hostname",name -> hostname = name);
+        UI.addButton("Join Server",this::join);
     }
 
     private void startServer() {
+        new Networking(engine).connect(true,"");
         startGame();
-        new Server(engine).connect();
     }
 
 
     private void join() {
+        new Networking(engine).connect(false,hostname);
         startGame();
-        new Client(engine).connect(hostname);
     }
     void doHit() {
         for (int i = 0; i < 3; i++) {

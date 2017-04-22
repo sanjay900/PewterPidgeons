@@ -13,7 +13,7 @@ public class Projectile implements GameObject {
     boolean dead = false;
 
     public Projectile(PVector start, PVector end) {
-        this.motion = PVector.sub(end,start).normalize().mult(3);
+        this.motion = PVector.sub(end,start).normalize().mult(10);
         this.position = start.add(motion.copy().mult(4));
         id = (int) (Math.random()*Integer.MAX_VALUE);
     }
@@ -33,22 +33,22 @@ public class Projectile implements GameObject {
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
 
-        if (!dead) {
-            if (engine.manager.isWall(new Location(Math.round(position.x / 100f), Math.round(position.z / 100f), Math.round(position.y / 100f)))) {
+        if (dead) return;
+        if (engine.manager.isWall(new Location(Math.round(position.x / 100f), Math.round(position.z / 100f), Math.round(position.y / 100f)))) {
+            dead = true;
+            return;
+        }
+        for (Player player : engine.playerMap.values()) {
+            if (player.collides(this)) {
+                player.hit();
                 dead = true;
                 return;
             }
-            for (Player player : engine.playerMap.values()) {
-                if (player.collides(this)) {
-                    player.hit();
-                    dead = true;
-                    return;
-                }
-            }
         }
+
         engine.pushMatrix();
         engine.translate(position.x,position.y,position.z);
-        engine.fill(255);
+        engine.fill(20,20,20);
         engine.sphere(2);
         engine.popMatrix();
     }
