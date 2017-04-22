@@ -67,7 +67,6 @@ public class TestWindow {
     private MouseMotionAdapter adapter1 = new MouseMotionAdapter() {
         @Override
         public void mouseDragged(MouseEvent e) {
-            startGame();
             // get location of Window
             int thisX = UI.getFrame().getLocation().x;
             int thisY = UI.getFrame().getLocation().y;
