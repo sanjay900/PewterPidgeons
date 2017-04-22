@@ -7,8 +7,6 @@ import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.core.PImage;
-import processing.opengl.PGraphicsOpenGL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +20,6 @@ public class TestEngine extends PApplet {
     MiniMap miniMap;
     KeyInput input = new KeyInput();
     TestWindow window;
-    PGraphics offscrean;
     public static final String GAME_NAME = "%insert_title%";
     public Room selected;
     ArrayList<Sticker> stickerList;
@@ -40,8 +37,7 @@ public class TestEngine extends PApplet {
 
     public void setup() {
         frameRate(144);
-        offscrean = createGraphics(width,height, P3D);
-        manager = new MapManager(this,30,30,2,offscrean);
+        manager = new MapManager(this,30,30,2);
         player = new Player(manager.getStartLoc());
         playerList.add(player);
         playerList.add(new Player(new Location(0,0,0)));
@@ -101,7 +97,9 @@ public class TestEngine extends PApplet {
     }
     @Override
     public void mouseClicked(){
-        manager.offscreenCheck(this);
+        PGraphics offscreen = createGraphics(width,height, P3D);
+        manager.offscreenCheck(this, offscreen);
+        offscreen.dispose();
         stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
     }
 }

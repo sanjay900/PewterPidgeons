@@ -57,8 +57,6 @@ public class Player implements GameObject {
             camPos.sub(mvmt);
         }
         camPos.z = (getLocation().getZ() * 100);
-
-
     }
 
     public Location getLocation() {
@@ -79,11 +77,11 @@ public class Player implements GameObject {
         engine.translate(camPos.x, camPos.z, camPos.y);
     }
 
-    public void offscreenTransform(TestEngine engine) {
-        engine.offscrean.resetMatrix();
-        engine.offscrean.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);
-        engine.offscrean.rotateY(-camRot);
-        engine.offscrean.translate(camPos.x, camPos.z, camPos.y);
+    public void offscreenTransform(TestEngine engine, PGraphics offscreen) {
+        offscreen.resetMatrix();
+        offscreen.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);
+        offscreen.rotateY(-camRot);
+        offscreen.translate(camPos.x, camPos.z, camPos.y);
     }
 
     public PVector getRelative(Player p) {

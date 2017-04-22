@@ -21,11 +21,9 @@ public class MapManager implements GameObject{
     private int zSize;
     @Getter
     private Location startLoc;
-    PGraphics offscreen;
 
-    public MapManager(TestEngine te, int xSize, int ySize, int zSize, PGraphics offscrean){
+    public MapManager(TestEngine te, int xSize, int ySize, int zSize){
         this.te = te;
-        this.offscreen = offscrean;
         this.xSize = xSize;
         this.ySize = ySize;
         this.zSize = zSize;
@@ -50,11 +48,11 @@ public class MapManager implements GameObject{
         });
     }
 
-    public void offscreenCheck(TestEngine engine){
+    public void offscreenCheck(TestEngine engine, PGraphics offscreen){
         HashMap<Color,Room> colorMap = new HashMap<>();
         offscreen.beginDraw();
         offscreen.clear();
-        engine.player.offscreenTransform(engine);
+        engine.player.offscreenTransform(engine, offscreen);
         roomMap.values().forEach(r -> {
             Color c = r.renderOffscreen(engine,offscreen);
             if (c != null)
