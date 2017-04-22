@@ -37,7 +37,7 @@ public class Client {
             new Thread(()->{
                 try {
                     while(kkSocket.isConnected()) {
-                        String[] starter = in.readLine().split(",");
+                            String[] starter = in.readLine().split(",");
                         if(starter[0].equals("MAGIC")){
                             String s = starter[1];
                             if(engine.playerMap.containsKey(s) && !engine.player.getPlayerName().equals(s)){
