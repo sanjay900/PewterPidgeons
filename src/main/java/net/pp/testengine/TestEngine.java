@@ -1,18 +1,23 @@
 package net.pp.testengine;
 
+
 import com.jogamp.newt.opengl.GLWindow;
 import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
+import processing.core.PConstants;
 import processing.core.PGraphics;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TestEngine extends PApplet {
     MapManager manager;
+    ArrayList<Player> playerList = new ArrayList<>();
     Player player;
+    MiniMap miniMap;
     KeyInput input = new KeyInput();
     TestWindow window;
     PGraphics offscrean;
@@ -35,15 +40,29 @@ public class TestEngine extends PApplet {
         offscrean = createGraphics(width,height, P3D);
         manager = new MapManager(this,10,10,2,offscrean);
         player = new Player(manager.getStartLoc());
+        playerList.add(player);
+        playerList.add(new Player(new Location(0,0,0)));
+        miniMap = new MiniMap(this, width-100, height-100);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
     }
     public void draw() {
+        pushMatrix();
+        hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
         player.move(input.getMotion(),manager);
         clear();
         player.render(this,blueBounds);
         manager.render(this,blueBounds);
+
+        pushMatrix();
+        translate(200,0,200);
+        Models.MINO.render(this,3,10);
+        popMatrix();
+        popMatrix();
+        hint(PConstants.DISABLE_DEPTH_TEST);
+
+        miniMap.render(player);
     }
 
     /**

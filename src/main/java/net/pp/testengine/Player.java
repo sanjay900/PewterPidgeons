@@ -1,11 +1,11 @@
 package net.pp.testengine;
 
-import processing.core.PGraphics;
+import processing.core.PApplet;
 import processing.core.PVector;
-import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.*;
 
+import static processing.core.PApplet.print;
 import static processing.core.PApplet.radians;
 
 public class Player implements GameObject{
@@ -53,6 +53,12 @@ public class Player implements GameObject{
 
 
     }
+    public PVector getRelative(Player p){
+        return new PVector(
+                    this.getLocation().getX()-p.getLocation().getX(),
+                    this.getLocation().getY()-p.getLocation().getY());
+    }
+
     public Location getLocation() {
         PVector realPos = PVector.div(camPos,Room.ROOM_SIZE);
         return new Location(-Math.round(realPos.x), -Math.round(realPos.y), (int)realPos.z);
