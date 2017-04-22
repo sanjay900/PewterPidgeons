@@ -61,11 +61,17 @@ public class Server {
 
     public void serverListener(DataInputStream in) throws IOException{
         String magic = in.readUTF();
-        if(magic.equals("MAGIC")){
+        if(magic.startsWith("MAGIC")){
             String s = in.readUTF();
             Player p;
             if(engine.playerMap.containsKey(s)){
                 p = engine.playerMap.get(s);
+                if (p.equals(engine.player)) {
+                    //Read in the data anyways
+                    new PVector(in.readFloat(),in.readFloat(),in.readFloat());
+                   in.readFloat();
+                    return;
+                }
                 p.setCamPos(new PVector(in.readFloat(),in.readFloat(),in.readFloat()));
             } else {
                 engine.playerMap.put(s, p=new Player(s,new PVector(in.readFloat(),in.readFloat(),in.readFloat())));
@@ -92,7 +98,7 @@ public class Server {
             out.writeFloat(p.getCamPos().z);
             out.writeFloat(p.getCamRot());
         }
-        for (Projectile p : new ArrayList<>(engine.projectileMap.values())) {
+        for (Projectile p : engine.projectileMap.values()) {
             out.writeUTF("BULLET");
             out.writeInt(p.getId());
             out.writeFloat(p.getMotion().x);

@@ -12,7 +12,7 @@ public class Projectile implements GameObject {
     boolean isRemote = false;
 
     public Projectile(PVector start, PVector end) {
-        this.motion = PVector.sub(end,start).normalize().mult(10);
+        this.motion = PVector.sub(end,start).normalize().mult(15);
         this.position = start.add(motion.copy().mult(4));
         id = (int) (Math.random()*Integer.MAX_VALUE);
     }
@@ -33,6 +33,11 @@ public class Projectile implements GameObject {
         if (engine.manager.isWall(new Location(position))) {
             engine.projectileMap.remove(id);
             return;
+        }
+        for (Player player : engine.playerMap.values()) {
+            if (player.collides(this)) {
+                System.out.println("Collide and shit");
+            }
         }
         engine.pushMatrix();
         engine.translate(position.x,position.y,position.z);

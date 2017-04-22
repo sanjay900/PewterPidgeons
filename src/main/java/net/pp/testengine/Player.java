@@ -106,4 +106,8 @@ public class Player implements GameObject {
                 this.getLocation().getX() - p.getLocation().getX(),
                 this.getLocation().getY() - p.getLocation().getY());
     }
+
+    public boolean collides(Projectile projectile) {
+        return projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z,-camPos.y)) < 5;
+    }
 }

@@ -15,12 +15,13 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TestEngine extends PApplet {
 
     MapManager manager;
-    HashMap<String, Player> playerMap;
-    HashMap<Integer, Projectile> projectileMap;
+    ConcurrentHashMap<String, Player> playerMap;
+    ConcurrentHashMap<Integer, Projectile> projectileMap;
     Player player = new Player("",new PVector(0,0,0));
     MiniMap miniMap;
     KeyInput input = new KeyInput();
@@ -35,8 +36,8 @@ public class TestEngine extends PApplet {
         new TestEngine();
     }
     public TestEngine() {
-        playerMap = new HashMap<>();
-        projectileMap = new HashMap<>();
+        playerMap = new ConcurrentHashMap<>();
+        projectileMap = new ConcurrentHashMap<>();
         window = new TestWindow(this);
 
     }
