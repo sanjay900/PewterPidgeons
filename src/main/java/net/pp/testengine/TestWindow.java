@@ -35,6 +35,7 @@ public class TestWindow {
     }
 
     private void startGame() {
+        engine.bootProcessing();
         JMenuBar bar = UI.getFrame().getJMenuBar();
         bar.remove(0);
         //Create a JMenuItem that looks like a title bar since we have to get rid of the existing one.
@@ -50,7 +51,6 @@ public class TestWindow {
         UI.getFrame().setUndecorated(true);
         //Now that this is done, show it again
         UI.getFrame().setVisible(true);
-        ProcessingRunner.run(new TestEngine());
         ((JComponent)UI.theUI.canvas).addKeyListener(ada);
         UI.getFrame().addKeyListener(ada);
         UI.getFrame().addMouseListener(adapter);
