@@ -27,7 +27,6 @@ public class TestEngine extends PApplet {
     KeyInput input = new KeyInput();
     TestWindow window;
     public static final String GAME_NAME = "%insert_title%";
-    public Room selected;
     ArrayList<Sticker> stickerList;
     ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
     MusicManager musicManager;
@@ -76,8 +75,6 @@ public class TestEngine extends PApplet {
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
         miniMap.render(player);
-//        translate(blueBounds.x,blueBounds.y);
-//        rect(0,0,blueBounds.width,blueBounds.height);
 
 //        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
 //        stickerList.forEach(s -> s.render(this));
@@ -93,7 +90,8 @@ public class TestEngine extends PApplet {
         com.jogamp.nativewindow.util.Rectangle glbb = window.getBounds();
         JComponent comp = UI.theUI.canvas;
         Point pt = comp.getLocationOnScreen();
-        Rectangle awtbb = new Rectangle(pt.x,pt.y,comp.getWidth(),comp.getHeight());
+        //This is why UI makes me want to kill myself every night.
+        Rectangle awtbb = new Rectangle(pt.x,pt.y,365,347);
         int x5 = (int) Math.max(glbb.getX(), awtbb.getX());
         int y5 = (int) Math.max(glbb.getY(), awtbb.getY());
         int x6 = (int) Math.min(glbb.getX()+glbb.getWidth(), awtbb.getX()+awtbb.getWidth());
