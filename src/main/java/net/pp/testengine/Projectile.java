@@ -30,6 +30,10 @@ public class Projectile implements GameObject {
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
+        if (engine.manager.isWall(new Location(position))) {
+            engine.projectileMap.remove(id);
+            return;
+        }
         engine.pushMatrix();
         engine.translate(position.x,position.y,position.z);
         engine.fill(255);

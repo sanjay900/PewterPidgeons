@@ -2,10 +2,8 @@ package net.pp.testengine;
 
 import net.tangentmc.model.MD2.Animation;
 import net.tangentmc.model.MD2.ClippableImporter;
-import net.tangentmc.model.MD2.Importer;
 import net.tangentmc.model.MD2.MD2ClippableModel;
 import processing.core.PApplet;
-import processing.core.PConstants;
 
 import java.io.IOException;
 

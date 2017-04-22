@@ -12,6 +12,12 @@ import processing.core.PVector;
 public class Location {
     private final int x,y,z;
 
+    public Location(PVector position) {
+        this.x = (int) (position.x/100);
+        this.y = (int) (position.y/100);
+        this.z = (int) (position.z/100);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

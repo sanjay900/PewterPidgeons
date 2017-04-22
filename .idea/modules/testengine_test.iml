@@ -12,6 +12,7 @@
     <orderEntry type="module" module-name="testengine_main" />
     <orderEntry type="library" name="Gradle: net.tangentmc:ProcessingUtils:1.2" level="project" />
     <orderEntry type="library" name="Gradle: nz.ac.victoria.ecs:ecs:100" level="project" />
+    <orderEntry type="library" name="Gradle: nz.ac.victoria.ecs:UISound:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
     <orderEntry type="library" name="Gradle: org.processing:core:3.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jogamp.gluegen:gluegen-rt-main:2.3.2" level="project" />
