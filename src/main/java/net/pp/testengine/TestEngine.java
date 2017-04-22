@@ -38,7 +38,7 @@ public class TestEngine extends PApplet {
     public void setup() {
         frameRate(144);
         offscrean = createGraphics(width,height, P3D);
-        manager = new MapManager(this,10,10,2,offscrean);
+        manager = new MapManager(this,30,30,2,offscrean);
         player = new Player(manager.getStartLoc());
         playerList.add(player);
         playerList.add(new Player(new Location(0,0,0)));
@@ -55,10 +55,6 @@ public class TestEngine extends PApplet {
         player.render(this,blueBounds);
         manager.render(this,blueBounds);
 
-        pushMatrix();
-        translate(200,0,200);
-        Models.MINO.render(this,3,10);
-        popMatrix();
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
 
