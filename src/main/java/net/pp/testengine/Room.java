@@ -98,7 +98,7 @@
 
                 engine.endShape();
             } else if (isStair) {
-                Models.STAIR.render(engine,0,5);
+                //Models.STAIR.render(engine,0,5);
             } else {
                 engine.fill(255, 255, 255);
                 engine.scale(Room.ROOM_SIZE/2);

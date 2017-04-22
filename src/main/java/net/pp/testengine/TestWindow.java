@@ -1,7 +1,6 @@
 package net.pp.testengine;
 
 import ecs100.UI;
-import net.tangentmc.processing.ProcessingRunner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +15,8 @@ public class TestWindow {
         UI.setDivider(0);
         UI.setFontSize(20);
         UI.drawString("Welcome to "+TestEngine.GAME_NAME+" Game!",260,20);
-        UI.drawString("Move this window over the game window to uncover secrets!",150,40);
+        UI.drawString("<-- Click the buttons to the side to join / start a game!",150,40);
+        UI.drawString("Then this window can be used to interact with the game.",150,60);
         UI.getFrame().setAlwaysOnTop(true);
         UI.addButton("Join Server",this::join);
         UI.addTextField("Hostname",name -> hostname = name);

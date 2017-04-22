@@ -2,9 +2,8 @@ package net.pp.testengine;
 
 import lombok.Getter;
 import lombok.Setter;
-import processing.core.PGraphics;
-import lombok.Getter;
-import processing.core.PApplet;
+import net.tangentmc.model.MD2.Vertex;
+import processing.core.PConstants;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -19,8 +18,9 @@ public class Player implements GameObject {
     public Player(String nameIn, PVector startPos){
         playerName = nameIn;
         camPos = startPos;
+        isLocal = false;
     }
-
+    boolean isLocal = true;
     // variables for Dom's cameraw
 
     @Getter
@@ -81,14 +81,22 @@ public class Player implements GameObject {
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
+        if (isLocal) {
+            // set up the camera (by doing reverse transformations)
+            engine.resetMatrix();
+            engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
+            engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
+            engine.translate(camPos.x, camPos.z, camPos.y);
+        } else if (blueBounds != null){
+            engine.pushMatrix();
+            engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
+            engine.rotateX(PConstants.HALF_PI);
+            engine.scale(5);
+            Models.SCORPION.model.drawModel(blueBounds,engine);
+            engine.popMatrix();
 
-        // set up the camera (by doing reverse transformations)
-        engine.resetMatrix();
-        engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
-        engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
-        engine.translate(camPos.x, camPos.z, camPos.y);
+        }
     }
-
 
     public PVector getRelative(Player p) {
         return new PVector(

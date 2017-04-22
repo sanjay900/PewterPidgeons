@@ -64,7 +64,7 @@ public class TestEngine extends PApplet {
         player.move(input.getMotion(),manager);
         projectiles.forEach(Projectile::update);
         clear();
-        player.render(this,blueBounds);
+        playerMap.values().forEach(p -> p.render(this,blueBounds));
         s.captureViewMatrix((PGraphics3D) this.g);
         manager.render(this,blueBounds);
         projectiles.forEach(p -> p.render(this,blueBounds));
@@ -72,8 +72,9 @@ public class TestEngine extends PApplet {
         hint(PConstants.DISABLE_DEPTH_TEST);
 
         miniMap.render(player);
-        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
-        stickerList.forEach(s -> s.render(this));
+
+//        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
+//        stickerList.forEach(s -> s.render(this));
     }
 
     /**
@@ -95,7 +96,7 @@ public class TestEngine extends PApplet {
         y5 -= glbb.getY();
         x6 -= glbb.getX();
         y6 -= glbb.getY();
-        if (x5 > x6 || y5 > y6) return null;
+        if (x5 > x6 || y5 > y6) return new Rectangle(-Integer.MAX_VALUE,-Integer.MAX_VALUE,0,0);
         return new Rectangle(x5,y5,x6-x5,y6-y5);
     }
 
