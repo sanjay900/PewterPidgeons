@@ -25,7 +25,7 @@ public class TestWindow {
 
     private void startServer() {
         startGame();
-        new Server().connect();
+        new Server(engine).connect();
     }
 
 

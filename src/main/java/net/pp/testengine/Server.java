@@ -1,5 +1,6 @@
 package net.pp.testengine;
 
+import lombok.AllArgsConstructor;
 import processing.core.PVector;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.util.InputMismatchException;
 /**
  * Created by Klimpen on 22/04/2017.
  */
+@AllArgsConstructor
 public class Server {
 
     public static final int PORT_NUM = 12903;
