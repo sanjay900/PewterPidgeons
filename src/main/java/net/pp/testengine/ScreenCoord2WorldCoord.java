@@ -114,7 +114,7 @@ public class ScreenCoord2WorldCoord
         return m_bValid;
     }
     public float screenXImpl(float x, float y, float z, TestEngine engine) {
-        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview;
+        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview.get();
         float ax =
                 modelview.m00*x + modelview.m01*y + modelview.m02*z + modelview.m03;
         float ay =
@@ -128,7 +128,7 @@ public class ScreenCoord2WorldCoord
 
 
     public float screenXImpl(float x, float y, float z, float w, TestEngine engine) {
-        PMatrix3D projection = ((PGraphics3D)engine.g).projection;
+        PMatrix3D projection = ((PGraphics3D)engine.g).projection.get();
         float ox =
                 projection.m00*x + projection.m01*y + projection.m02*z + projection.m03*w;
         float ow =
@@ -141,7 +141,7 @@ public class ScreenCoord2WorldCoord
         return sx;
     }
     public float screenYImpl(float x, float y, float z, TestEngine engine) {
-        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview;
+        PMatrix3D modelview = ((PGraphics3D)engine.g).modelview.get();
         float ax =
                 modelview.m00*x + modelview.m01*y + modelview.m02*z + modelview.m03;
         float ay =
@@ -155,7 +155,7 @@ public class ScreenCoord2WorldCoord
 
 
     public float screenYImpl(float x, float y, float z, float w, TestEngine engine) {
-        PMatrix3D projection = ((PGraphics3D)engine.g).projection;
+        PMatrix3D projection = ((PGraphics3D)engine.g).projection.get();
         float oy =
                 projection.m10*x + projection.m11*y + projection.m12*z + projection.m13*w;
         float ow =
