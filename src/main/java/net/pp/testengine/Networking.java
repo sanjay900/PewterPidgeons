@@ -98,9 +98,7 @@ public class Networking {
             int id = in.readInt();
             PVector mot = new PVector(in.readFloat(),in.readFloat(),in.readFloat());
             PVector pos = new PVector(in.readFloat(),in.readFloat(),in.readFloat());
-            if (engine.projectileMap.containsKey(id)) {
-               // engine.projectileMap.get(id).updateWith(mot,pos);
-            } else {
+            if (!engine.projectileMap.containsKey(id)) {
                 engine.projectileMap.put(id,new Projectile(id,mot,pos));
             }
             if (in.readBoolean()) {

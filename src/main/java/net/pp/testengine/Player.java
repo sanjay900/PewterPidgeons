@@ -2,7 +2,6 @@ package net.pp.testengine;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.tangentmc.model.MD2.Vertex;
 import processing.core.PConstants;
 import processing.core.PVector;
 
@@ -93,6 +92,7 @@ public class Player implements GameObject {
         if (engine.key == 'f' && engine.player == this) {
             placeMine(engine);
         }
+        System.out.println(blueBounds.width);
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
@@ -101,7 +101,7 @@ public class Player implements GameObject {
             engine.resetMatrix();
             engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
             engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
-            engine.translate(camPos.x, camPos.z, camPos.y);
+            engine.translate(camPos.x, camPos.z-30, camPos.y);
             camRotation = new PVector();
             camRotation = engine.getMatrix().mult(camRotation,null);
         } else if (blueBounds.width > 0){
