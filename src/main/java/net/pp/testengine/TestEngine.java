@@ -1,15 +1,13 @@
 package net.pp.testengine;
 
-import com.jogamp.nativewindow.util.*;
 import com.jogamp.newt.opengl.GLWindow;
 import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
+import processing.core.PGraphics;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Arrays;
 
 public class TestEngine extends PApplet {
@@ -17,7 +15,10 @@ public class TestEngine extends PApplet {
     Player player;
     KeyInput input = new KeyInput();
     TestWindow window;
+    PGraphics offscrean;
     public static final String GAME_NAME = "%insert_title%";
+    public Room selected;
+
     public static void main(String[] args) {
         ProcessingRunner.run(new TestEngine());
     }
@@ -27,11 +28,12 @@ public class TestEngine extends PApplet {
     public void settings() {
         size(800, 600, P3D);
         randomSeed(31);
-        manager = new MapManager(this,20,20,2);
     }
 
     public void setup() {
         frameRate(144);
+        offscrean = createGraphics(width,height, P3D);
+        manager = new MapManager(this,10,10,2,offscrean);
         player = new Player(manager.getStartLoc());
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
@@ -42,11 +44,6 @@ public class TestEngine extends PApplet {
         clear();
         player.render(this,blueBounds);
         manager.render(this,blueBounds);
-        pushMatrix();
-        translate(200,0,200);
-        Models.MINO.render(this,3,10);
-        popMatrix();
-
     }
 
     /**
@@ -80,5 +77,6 @@ public class TestEngine extends PApplet {
     public void keyReleased() {
         input.keyReleased(key);
     }
+
 }
 

@@ -25,19 +25,14 @@ public enum Models {
     void load(PApplet applet) {
         try {
             model = new Importer().importModel(applet.dataFile(modelName),applet.loadImage(imageName),applet);
+            if (this == MINO) {
+              //  model.setAnimation( new Animation(100,1,0.75f,1),2);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    boolean anim = false;
     public void render(TestEngine engine, float height, float scale) {
-        if (!anim) {
-            if (this == MINO) {
-                model.setAnimation(new Animation(100,1,0.75f,10),2);
-                model.startAnimation();
-            }
-            anim = true;
-        }
         if(!outline) engine.noStroke();
         engine.translate(0, -height+Room.ROOM_SIZE/2,0);
         engine.rotateX(PConstants.HALF_PI);

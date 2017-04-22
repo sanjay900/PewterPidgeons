@@ -1,7 +1,9 @@
 package net.pp.testengine;
 
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 import processing.core.PConstants;
+import processing.core.PGraphics;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
  * Created by Klimpen on 21/04/2017.
  * TODO everything
  */
+@ToString
 @AllArgsConstructor
 public class Room implements GameObject{
     private MapManager manager;
@@ -64,5 +67,16 @@ public class Room implements GameObject{
         }
         engine.popMatrix();
         entities.forEach(o -> o.render(engine, bounds));
+    }
+
+    public Color renderOffscreen(TestEngine engine, PGraphics offscreen) {
+        if (!isWall && !isStair) return null;
+        offscreen.pushMatrix();
+        offscreen.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*Room.ROOM_SIZE),position.getY()*Room.ROOM_SIZE);
+        Color c = new Color((int)engine.random(255),(int)engine.random(255),(int)engine.random(255));
+        offscreen.fill(c.getRed(),c.getGreen(), c.getBlue());
+        offscreen.box(ROOM_SIZE);
+        offscreen.popMatrix();
+        return c;
     }
 }

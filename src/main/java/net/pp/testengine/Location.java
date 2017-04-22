@@ -7,6 +7,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
+
 public class Location {
     private final int x,y,z;
 

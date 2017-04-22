@@ -1,11 +1,11 @@
 package net.pp.testengine;
 
-import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
+import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.*;
 
-import static processing.core.PApplet.print;
 import static processing.core.PApplet.radians;
 
 public class Player implements GameObject{
@@ -68,5 +68,11 @@ public class Player implements GameObject{
         engine.perspective(radians(60), (float)engine.width/(float)engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
         engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
         engine.translate(camPos.x, camPos.z, camPos.y);
+    }
+    public void offscreenTransform(TestEngine engine) {
+        engine.offscrean.resetMatrix();
+        engine.offscrean.perspective(radians(60), (float)engine.width/(float)engine.height, 1.0f, 10000.0f);
+        engine.offscrean.rotateY(-camRot);
+        engine.offscrean.translate(camPos.x, camPos.z, camPos.y);
     }
 }
