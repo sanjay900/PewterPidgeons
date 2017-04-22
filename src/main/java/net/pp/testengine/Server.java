@@ -31,6 +31,7 @@ public class Server {
                             try {
                                 PrintWriter out =
                                         new PrintWriter(clientSocket.getOutputStream(), true);
+                                //out.println("31");
                                 while(clientSocket.isConnected()) {
                                     serverWriter(out);
                                 }
