@@ -9,8 +9,8 @@ public class Projectile implements GameObject {
     PVector position;
 
     public Projectile(PVector start, PVector end) {
-        this.position = start;
         this.motion = PVector.sub(end,start).normalize().mult(10);
+        this.position = start.add(motion.copy().mult(4));
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Projectile implements GameObject {
         engine.pushMatrix();
         engine.translate(position.x,position.y,position.z);
         engine.fill(255);
-        engine.box(25);
+        engine.sphere(2);
         engine.popMatrix();
     }
 }

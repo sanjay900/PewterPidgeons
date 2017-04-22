@@ -27,26 +27,27 @@ public class Client {
                     new InputStreamReader(kkSocket.getInputStream()));
             new Thread(()->{
                 while(kkSocket.isConnected()){
-                    out.println("MAGIC" + "," + engine.player.getPlayerName());
-                    out.println(engine.player.getPlayerName() + "," + engine.player.getCamPos().x);
-                    out.println(engine.player.getPlayerName() + "," + engine.player.getCamPos().y);
-                    out.println(engine.player.getPlayerName() + "," + engine.player.getCamPos().z);
-                    out.println(engine.player.getPlayerName() + "," + engine.player.getCamRot());
+                    out.println("MAGIC" + "," +
+                    engine.player.getPlayerName() + "," +
+                    engine.player.getCamPos().x + "," +
+                    engine.player.getCamPos().y + "," +
+                    engine.player.getCamPos().z + "," +
+                    engine.player.getCamRot());
                 }
             }).start();
             new Thread(()->{
                 try {
+                    String[] starter = in.readLine().split(",");
                     while(kkSocket.isConnected()) {
-                        String[] starter = in.readLine().split(",");
                         if(starter[0].equals("MAGIC")){
                             String s = starter[1];
                             if(engine.playerMap.containsKey(s) && !engine.player.getPlayerName().equals(s)){
                                 Player p = engine.playerMap.get(s);
                                 p.setCamPos(new PVector(
-                                        checkFloat(p, in.readLine().split(",")),
-                                        checkFloat(p, in.readLine().split(",")),
-                                        checkFloat(p, in.readLine().split(","))));
-                                p.setCamRot(checkFloat(p, in.readLine().split(",")));
+                                        Float.parseFloat(starter[2]),
+                                        Float.parseFloat(starter[3]),
+                                        Float.parseFloat(starter[4])));
+                                p.setCamRot(Float.parseFloat(starter[5]));
                             }
                         }
                     }

@@ -32,7 +32,7 @@ public class Server {
                                 PrintWriter out =
                                         new PrintWriter(clientSocket.getOutputStream(), true);
                                 while(clientSocket.isConnected()) {
-                                    serverWriter(clientSocket, out);
+                                    serverWriter(out);
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -44,7 +44,7 @@ public class Server {
                                         new InputStreamReader(clientSocket.getInputStream()));
 
                                 while(clientSocket.isConnected()) {
-                                    serverListener(clientSocket, in);
+                                    serverListener(in);
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -62,35 +62,29 @@ public class Server {
         }
     }
 
-    public void serverListener(Socket clientSocket, BufferedReader in) throws IOException{
+    public void serverListener(BufferedReader in) throws IOException{
         String[] starter = in.readLine().split(",");
         if(starter[0].equals("MAGIC")){
             String s = starter[1];
             if(engine.playerMap.containsKey(s)){
                 Player p = engine.playerMap.get(s);
                 p.setCamPos(new PVector(
-                        checkFloat(p, in.readLine().split(",")),
-                        checkFloat(p, in.readLine().split(",")),
-                        checkFloat(p, in.readLine().split(","))));
-                p.setCamRot(checkFloat(p, in.readLine().split(",")));
+                        Float.parseFloat(starter[2]),
+                        Float.parseFloat(starter[3]),
+                        Float.parseFloat(starter[4])));
+                p.setCamRot(Float.parseFloat(starter[5]));
             }
         }
     }
 
-    private float checkFloat(Player p, String[] stringIn){
-        if(p.getPlayerName().equals(stringIn[0])) {
-            return Float.parseFloat(stringIn[1]);
-        } throw new InputMismatchException();
-
-    }
-
-    public void serverWriter(Socket clientSocket, PrintWriter out) throws IOException{
+    public void serverWriter(PrintWriter out) throws IOException{
         for(Player p : engine.playerMap.values()){
-            out.println("MAGIC" + "," + p.getPlayerName());
-            out.println(p.getPlayerName() + "," + p.getCamPos().x);
-            out.println(p.getPlayerName() + "," + p.getCamPos().y);
-            out.println(p.getPlayerName() + "," + p.getCamPos().z);
-            out.println(p.getPlayerName() + "," + p.getCamRot());
+            out.println("MAGIC" + "," +
+                    p.getPlayerName()+ "," +
+                    p.getCamPos().x  + "," +
+                    p.getCamPos().y  + "," +
+                    p.getCamPos().z  + "," +
+                    p.getCamRot());
         }
     }
 }
