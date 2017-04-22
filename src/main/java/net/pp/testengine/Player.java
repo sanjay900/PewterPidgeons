@@ -1,5 +1,6 @@
 package net.pp.testengine;
 
+import lombok.Getter;
 import processing.core.PApplet;
 import processing.core.PVector;
 
@@ -13,7 +14,9 @@ public class Player implements GameObject{
         camPos = new PVector(-start.getX(),-start.getY()).mult(Room.ROOM_SIZE);
     }
     // variables for Dom's cameraw
+    @Getter
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
+    @Getter
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
     private float moveAmount = 0.1f;
     private float rotSpeed = 1.2f;
@@ -53,6 +56,12 @@ public class Player implements GameObject{
 
 
     }
+    public PVector getRelative(Player p){
+        return new PVector(
+                    this.getLocation().getX()-p.getLocation().getX(),
+                    this.getLocation().getY()-p.getLocation().getY());
+    }
+
     public Location getLocation() {
         PVector realPos = PVector.div(camPos,Room.ROOM_SIZE);
         return new Location(-Math.round(realPos.x), -Math.round(realPos.y), (int)realPos.z);
@@ -69,4 +78,5 @@ public class Player implements GameObject{
         engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
         engine.translate(camPos.x, camPos.z, camPos.y);
     }
+
 }
