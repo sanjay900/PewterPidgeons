@@ -52,6 +52,7 @@ public class Room implements GameObject{
     PImage floor;
     PImage roof;
     String[] roofImages = {"roof.png"};
+    String[] wallImages = {"stone_wall.png","stone_wall_moss.png"};
     String[] floorImages = {"step_texture.png"};
     PShape rendered = null;
     @Override
@@ -67,7 +68,6 @@ public class Room implements GameObject{
         engine.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*(Room.ROOM_SIZE+0.01f)),position.getY()*Room.ROOM_SIZE);
         if (placedMine != null) {
             engine.pushMatrix();
-            //engine.translate(ROOM_SIZE/2,0,ROOM_SIZE/2);engine.translate(0,Room.ROOM_SIZE/2,0);
             engine.translate(0,Room.ROOM_SIZE/2,0);
             engine.rotateX(PConstants.HALF_PI);
             engine.scale(2);
@@ -91,7 +91,7 @@ public class Room implements GameObject{
         rendered = engine.createShape(GROUP);
         PShape sub2 = engine.createShape();
         if (wall == null) {
-            wall = loadImage(engine,"stone_wall.png");
+            wall = loadImage(engine,wallImages[(int) engine.random(4)>=3?1:0]);
             floor = loadImage(engine,floorImages[(int) engine.random(floorImages.length)]);
             roof = loadImage(engine,roofImages[(int) engine.random(roofImages.length)]);
         }
@@ -169,7 +169,7 @@ public class Room implements GameObject{
         }
         rendered.addChild(sub2);
     }
-    static HashMap<String,PImage> imageHashMap = new HashMap<>();
+    private static HashMap<String,PImage> imageHashMap = new HashMap<>();
     private static PImage loadImage(TestEngine engine, String image) {
         if (imageHashMap.containsKey(image)) return  imageHashMap.get(image);
         PImage image3 = engine.loadImage(image);
