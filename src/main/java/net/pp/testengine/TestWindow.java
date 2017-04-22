@@ -33,14 +33,21 @@ public class TestWindow {
         startGame();
         new Client(engine).connect(hostname);
     }
-
+    private void doHit() {
+        for (int i = 0; i < 5; i++) {
+            UI.getFrame().setLocation(UI.getFrame().getLocation().x+50, UI.getFrame().getLocation().y+50);
+            UI.sleep(100);
+            UI.getFrame().setLocation(UI.getFrame().getLocation().x-50, UI.getFrame().getLocation().y-50);
+            UI.sleep(100);
+        }
+    }
     private void startGame() {
         engine.bootProcessing();
         UI.addButton("test",()->{}).getParent().removeAll();
         JMenuBar bar = UI.getFrame().getJMenuBar();
         bar.remove(0);
         //Create a JMenuItem that looks like a title bar since we have to get rid of the existing one.
-        JMenuItem title=new JMenuItem("<html><p style='text-align:center;width:680px'>The lens of !false</p></html>");
+        JMenuItem title=new JMenuItem("<html><p style='text-align:center;width:310px'>The lens of !false</p></html>");
         title.setBackground(Color.BLACK);
         title.setForeground(Color.WHITE);
         title.setFont(new Font(title.getFont().getName(),Font.PLAIN,20));
@@ -63,6 +70,7 @@ public class TestWindow {
         UI.getGraphics().fillRect(0,0,1000,1000);
         //Fiddle with the opacity now that it is undecorated
         UI.getFrame().setOpacity(0.5f);
+        UI.getFrame().setSize(new Dimension(400,400));
     }
 
     private MouseMotionAdapter adapter1 = new MouseMotionAdapter() {

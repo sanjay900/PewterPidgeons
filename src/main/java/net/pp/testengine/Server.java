@@ -1,21 +1,20 @@
 package net.pp.testengine;
 
-import lombok.AllArgsConstructor;
 import processing.core.PVector;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.InputMismatchException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by Klimpen on 22/04/2017.
  */
-@AllArgsConstructor
 public class Server {
+    public Server(TestEngine engine) {
+        this.engine = engine;
+    }
 
     public static final int PORT_NUM = 12903;
     TestEngine engine;
@@ -31,11 +30,9 @@ public class Server {
                         Socket clientSocket = serverSocket.accept();
                         new Thread(() -> {
                             try {
-                                PrintWriter out =
-                                        new PrintWriter(clientSocket.getOutputStream(), true);
                                 //out.println("31");
                                 while(clientSocket.isConnected()) {
-                                    serverWriter(out);
+                                    serverWriter(new DataOutputStream(clientSocket.getOutputStream()));
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -43,11 +40,8 @@ public class Server {
                         }).start();
                         new Thread(() -> {
                             try {
-                                BufferedReader in = new BufferedReader(
-                                        new InputStreamReader(clientSocket.getInputStream()));
-
                                 while(clientSocket.isConnected()) {
-                                    serverListener(in);
+                                    serverListener(new DataInputStream(clientSocket.getInputStream()));
                                 }
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -65,35 +59,49 @@ public class Server {
         }
     }
 
-    public void serverListener(BufferedReader in) throws IOException{
-        String[] starter = in.readLine().split(",");
-        if(starter[0].equals("MAGIC")){
-            String s = starter[1];
+    public void serverListener(DataInputStream in) throws IOException{
+        String magic = in.readUTF();
+        if(magic.equals("MAGIC")){
+            String s = in.readUTF();
+            Player p;
             if(engine.playerMap.containsKey(s)){
-                Player p = engine.playerMap.get(s);
-                p.setCamPos(new PVector(
-                        Float.parseFloat(starter[2]),
-                        Float.parseFloat(starter[3]),
-                        Float.parseFloat(starter[4])));
-                p.setCamRot(Float.parseFloat(starter[5]));
+                p = engine.playerMap.get(s);
+                p.setCamPos(new PVector(in.readFloat(),in.readFloat(),in.readFloat()));
             } else {
-                engine.playerMap.put(s, new Player(s, new PVector(
-                        Float.parseFloat(starter[2]),
-                        Float.parseFloat(starter[3]),
-                        Float.parseFloat(starter[4]))));
-                engine.playerMap.get(s).setCamRot(Float.parseFloat(starter[5]));
+                engine.playerMap.put(s, p=new Player(s,new PVector(in.readFloat(),in.readFloat(),in.readFloat())));
+            }
+            p.setCamRot(in.readFloat());
+        } else if (magic.startsWith("BULLET")) {
+            int id = in.readInt();
+            PVector mot = new PVector(in.readFloat(),in.readFloat(),in.readFloat());
+            PVector pos = new PVector(in.readFloat(),in.readFloat(),in.readFloat());
+            if (engine.projectileMap.containsKey(id)) {
+                engine.projectileMap.get(id).updateWith(mot,pos);
+            } else {
+                engine.projectileMap.put(id,new Projectile(id,mot,pos));
             }
         }
     }
 
-    public void serverWriter(PrintWriter out) throws IOException{
+    public void serverWriter(DataOutputStream out) throws IOException{
         for(Player p : engine.playerMap.values()){
-            out.println("MAGIC" + "," +
-                    p.getPlayerName()+ "," +
-                    p.getCamPos().x  + "," +
-                    p.getCamPos().y  + "," +
-                    p.getCamPos().z  + "," +
-                    p.getCamRot());
+            out.writeUTF("MAGIC");
+            out.writeUTF(p.getPlayerName());
+            out.writeFloat(p.getCamPos().x);
+            out.writeFloat(p.getCamPos().y);
+            out.writeFloat(p.getCamPos().z);
+            out.writeFloat(p.getCamRot());
+        }
+        for (Projectile p : new ArrayList<>(engine.projectileMap.values())) {
+            out.writeUTF("BULLET");
+            out.writeInt(p.getId());
+            out.writeFloat(p.getMotion().x);
+            out.writeFloat(p.getMotion().y);
+            out.writeFloat(p.getMotion().z);
+
+            out.writeFloat(p.getPosition().x);
+            out.writeFloat(p.getPosition().y);
+            out.writeFloat(p.getPosition().z);
         }
     }
 }

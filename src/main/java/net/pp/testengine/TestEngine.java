@@ -7,6 +7,7 @@ import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
 import javax.swing.*;
@@ -18,8 +19,9 @@ import java.util.HashMap;
 public class TestEngine extends PApplet {
 
     MapManager manager;
-    HashMap<String, Player> playerMap = new HashMap<>();
-    Player player;
+    HashMap<String, Player> playerMap;
+    HashMap<Integer, Projectile> projectileMap;
+    Player player = new Player("",new PVector(0,0,0));
     MiniMap miniMap;
     KeyInput input = new KeyInput();
     TestWindow window;
@@ -27,12 +29,13 @@ public class TestEngine extends PApplet {
     public Room selected;
     ArrayList<Sticker> stickerList;
     ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
-    public ArrayList<Projectile> projectiles = new ArrayList<>();
 
     public static void main(String[] args) {
         new TestEngine();
     }
     public TestEngine() {
+        playerMap = new HashMap<>();
+        projectileMap = new HashMap<>();
         window = new TestWindow(this);
 
     }
@@ -62,12 +65,12 @@ public class TestEngine extends PApplet {
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
         player.move(input.getMotion(),manager);
-        projectiles.forEach(Projectile::update);
+        new ArrayList<>(projectileMap.values()).forEach(Projectile::update);
         clear();
-        playerMap.values().forEach(p -> p.render(this,blueBounds));
+        new ArrayList<>(playerMap.values()).forEach(p -> p.render(this,blueBounds));
         s.captureViewMatrix((PGraphics3D) this.g);
         manager.render(this,blueBounds);
-        projectiles.forEach(p -> p.render(this,blueBounds));
+        new ArrayList<>(projectileMap.values()).forEach(p -> p.render(this,blueBounds));
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
 
@@ -114,7 +117,8 @@ public class TestEngine extends PApplet {
     public void mouseClicked(){
         stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
         s.calculatePickPoints(mouseX,height-mouseY);
-        projectiles.add(new Projectile(s.ptStartPos.copy(),s.ptEndPos.copy()));
+        Projectile f = new Projectile(s.ptStartPos.copy(),s.ptEndPos.copy());
+        projectileMap.put(f.getId(),f);
     }
 }
 
