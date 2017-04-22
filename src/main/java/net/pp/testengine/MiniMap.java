@@ -11,6 +11,7 @@ public class MiniMap {
     int x, y;
 
     public void render(Player player){
+        te.pushMatrix();
         te.ellipseMode(te.CENTER);
         te.noFill();
         te.stroke(0);
@@ -29,5 +30,6 @@ public class MiniMap {
             }
             te.ellipse(player.getRelative(p).x*5,player.getRelative(p).y*5,5,5);
         }
+        te.popMatrix();
     }
 }

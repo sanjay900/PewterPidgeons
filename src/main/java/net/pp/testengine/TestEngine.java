@@ -7,6 +7,7 @@ import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
+import processing.core.PImage;
 import processing.opengl.PGraphicsOpenGL;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class TestEngine extends PApplet {
     PGraphics offscrean;
     public static final String GAME_NAME = "%insert_title%";
     public Room selected;
+    ArrayList<Sticker> stickerList;
 
     public static void main(String[] args) {
         ProcessingRunner.run(new TestEngine());
@@ -43,6 +45,7 @@ public class TestEngine extends PApplet {
         player = new Player(manager.getStartLoc());
         playerList.add(player);
         playerList.add(new Player(new Location(0,0,0)));
+        stickerList = new ArrayList<>();
         miniMap = new MiniMap(this, width-100, height-100);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
@@ -61,6 +64,8 @@ public class TestEngine extends PApplet {
         hint(PConstants.DISABLE_DEPTH_TEST);
 
         miniMap.render(player);
+        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
+        stickerList.forEach(s -> s.render(this));
     }
 
     /**
@@ -97,8 +102,7 @@ public class TestEngine extends PApplet {
     @Override
     public void mouseClicked(){
         manager.offscreenCheck(this);
-        System.out.println(selected);
+        stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
     }
-
 }
 
