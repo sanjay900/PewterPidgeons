@@ -57,8 +57,8 @@ public class TestEngine extends PApplet {
         miniMap = new MiniMap(this);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
-        musicManager = new MusicManager(this);
-        musicManager.getMainTrack().play();
+//        musicManager = new MusicManager(this);
+//        musicManager.getMainTrack().play();
     }
     public void draw() {
         noStroke();

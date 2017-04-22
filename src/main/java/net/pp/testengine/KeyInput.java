@@ -26,7 +26,6 @@ public class KeyInput {
             case 'd':
                 motion.x-=10;
                 break;
-
         }
     }
 

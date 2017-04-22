@@ -2,6 +2,8 @@ package net.pp.testengine;
 
 import com.sun.org.apache.regexp.internal.RE;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import processing.core.*;
 
@@ -21,6 +23,9 @@ import static processing.core.PConstants.QUADS;
 @ToString
 @AllArgsConstructor
 public class Room implements GameObject{
+    @Getter
+    @Setter
+    private Player placedMine = null;
     private MapManager manager;
     Location position;
     public static final int ROOM_SIZE = 100;
@@ -60,6 +65,15 @@ public class Room implements GameObject{
         }
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*(Room.ROOM_SIZE+0.01f)),position.getY()*Room.ROOM_SIZE);
+        if (placedMine != null) {
+            engine.pushMatrix();
+            //engine.translate(ROOM_SIZE/2,0,ROOM_SIZE/2);engine.translate(0,Room.ROOM_SIZE/2,0);
+            engine.translate(0,Room.ROOM_SIZE/2,0);
+            engine.rotateX(PConstants.HALF_PI);
+            engine.scale(2);
+            Models.MINE.model.drawModel(bounds,engine);
+            engine.popMatrix();
+        }
         if (!isStair)
             engine.scale(Room.ROOM_SIZE/2);
         else {

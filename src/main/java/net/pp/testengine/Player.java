@@ -21,6 +21,7 @@ public class Player implements GameObject {
         isLocal = false;
     }
     boolean isLocal = true;
+    int mines = 2;
     // variables for Dom's cameraw
     @Getter
     private PVector camRotation = new PVector();
@@ -40,7 +41,13 @@ public class Player implements GameObject {
     public void update() {
 
     }
-
+    public void placeMine(TestEngine engine) {
+        if (mines <= 0) return;
+        Room r = engine.manager.getRoomMap().get(getLocation());
+        if (r.getPlacedMine() != null) return;
+        r.setPlacedMine(this);
+        mines--;
+    }
     public void move(PVector movement, MapManager manager) {
         PVector lastLoc = camPos.copy();
         Location lastLoca = getLocation();
@@ -49,6 +56,10 @@ public class Player implements GameObject {
         movement.x = 0;
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
+        if (manager.isMine(getLocation(),this)) {
+            hit();
+            manager.getRoomMap().get(getLocation()).setPlacedMine(null);
+        }
 //        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
         if (manager.isWall(getLocation())) {
             camPos = lastLoc;
@@ -79,6 +90,9 @@ public class Player implements GameObject {
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
+        if (engine.key == 'f' && engine.player == this) {
+            placeMine(engine);
+        }
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.

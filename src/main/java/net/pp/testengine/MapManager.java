@@ -62,4 +62,7 @@ public class MapManager implements GameObject{
     public boolean isStair(Location location) {
         return roomMap.containsKey(location) && roomMap.get(location).isStair ;
     }
+    public boolean isMine(Location location, Player toTest) {
+        return roomMap.containsKey(location) && roomMap.get(location).getPlacedMine() != null && roomMap.get(location).getPlacedMine() != toTest;
+    }
 }
