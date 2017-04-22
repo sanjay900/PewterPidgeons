@@ -29,7 +29,7 @@ public enum Models {
         try {
             model = new ClippableImporter().importModel(applet.dataFile(modelName),applet.loadImage(imageName),applet);
             if (this == SCORPION) {
-                model.setAnimation( animation =new Animation(160,1,0.75f,1),2);
+                model.setAnimation( animation =new Animation(160,1,0.75f,15),2);
             }
         } catch (IOException e) {
             e.printStackTrace();

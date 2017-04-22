@@ -22,7 +22,8 @@ public class Player implements GameObject {
     }
     boolean isLocal = true;
     // variables for Dom's cameraw
-
+    @Getter
+    private PVector camRotation = new PVector();
     @Getter
     @Setter
     private PVector camPos = new PVector();  //  (x, y) means (right, forward) in worldspace.
@@ -87,6 +88,8 @@ public class Player implements GameObject {
             engine.perspective(radians(60), (float) engine.width / (float) engine.height, 1.0f, 10000.0f);   // note: you were seeing z-clipping before.
             engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
             engine.translate(camPos.x, camPos.z, camPos.y);
+            camRotation = new PVector();
+            camRotation = engine.getMatrix().mult(camRotation,null);
         } else if (blueBounds != null){
             engine.pushMatrix();
             engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);

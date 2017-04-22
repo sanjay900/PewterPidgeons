@@ -14,6 +14,7 @@ public class MapManager implements GameObject{
     private TestEngine te;
     @Getter
     private HashMap<Location,Room> roomMap = new HashMap<>();
+    HashMap<Integer,Room> stairMap = new HashMap<>();
     private int xSize;
     private int ySize;
     private int zSize;
@@ -34,7 +35,14 @@ public class MapManager implements GameObject{
 
         mg.createMap(startLoc);
     }
-
+    public float distanceToStair(Room r) {
+        Room stair = stairMap.get(r.position.getZ()-1);
+        Room stair2 = stairMap.get(r.position.getZ()+1);
+        if (stair == null && stair2 == null) return 1000;
+        float dist1 = stair == null?100:r.position.distance(stair.position);
+        float dist2 = stair2 == null?100:r.position.distance(stair2.position);
+        return Math.min(dist1,dist2);
+    }
     @Override
     public void update() {
         roomMap.values().forEach(Room::update);

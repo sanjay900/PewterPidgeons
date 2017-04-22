@@ -36,6 +36,7 @@ public class MapGenerator {
             loc = new Location((int)(te.random(xSize)),(int)(te.random(ySize)),startLoc.getZ());
         }
         roomMap.get(loc).isStair = true;
+        manager.stairMap.put(loc.getZ(),roomMap.get(loc));
         return loc;
     }
 

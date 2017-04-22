@@ -56,10 +56,9 @@ public class TestEngine extends PApplet {
         miniMap = new MiniMap(this);
         Arrays.stream(Models.values()).forEach(m -> m.load(this));
         ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
-
-        ((GLWindow)getSurface().getNative()).getGL().glEnable(GL.GL_CULL_FACE);
     }
     public void draw() {
+        System.out.println(frameRate);
         noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
@@ -73,7 +72,6 @@ public class TestEngine extends PApplet {
         new ArrayList<>(projectileMap.values()).forEach(p -> p.render(this,blueBounds));
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
-
         miniMap.render(player);
 //        translate(blueBounds.x,blueBounds.y);
 //        rect(0,0,blueBounds.width,blueBounds.height);

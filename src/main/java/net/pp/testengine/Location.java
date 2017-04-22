@@ -40,4 +40,8 @@ public class Location {
     public PVector toVector() {
         return new PVector(x*Room.ROOM_SIZE,y*Room.ROOM_SIZE,z*Room.ROOM_SIZE);
     }
+
+    public float distance(Location position) {
+        return new PVector(x,y,z).dist(new PVector(position.x,position.y,position.z));
+    }
 }
