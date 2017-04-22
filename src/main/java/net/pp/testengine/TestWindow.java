@@ -1,6 +1,7 @@
 package net.pp.testengine;
 
 import ecs100.UI;
+import net.tangentmc.processing.ProcessingRunner;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,14 +9,32 @@ import java.awt.event.*;
 
 public class TestWindow {
     private Point initialClick;
+    private String hostname;
     public TestWindow(TestEngine engine) {
         this.engine = engine;
-        MouseAdapter adapter = new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-                initialClick = e.getPoint();
-            }
-        };
         UI.initialise();
+        UI.setDivider(0);
+        UI.setFontSize(20);
+        UI.drawString("Welcome to "+TestEngine.GAME_NAME+" Game!",260,20);
+        UI.drawString("Move this window over the game window to uncover secrets!",150,40);
+        UI.getFrame().setAlwaysOnTop(true);
+        UI.addButton("Join Server",this::join);
+        UI.addTextField("Hostname",name -> hostname = name);
+        UI.addButton("Start Server",this::startServer);
+    }
+
+    private void startServer() {
+        new Server().connect();
+        startGame();
+    }
+
+
+    private void join() {
+        new Client(engine).connect(hostname);
+        startGame();
+    }
+
+    private void startGame() {
         JMenuBar bar = UI.getFrame().getJMenuBar();
         bar.remove(0);
         //Create a JMenuItem that looks like a title bar since we have to get rid of the existing one.
@@ -31,22 +50,13 @@ public class TestWindow {
         UI.getFrame().setUndecorated(true);
         //Now that this is done, show it again
         UI.getFrame().setVisible(true);
-        UI.setFontSize(20);
-        UI.drawString("Welcome to "+TestEngine.GAME_NAME+" Game!",260,20);
-        UI.drawString("Move this window over the game window to uncover secrets!",150,40);
-        UI.getFrame().setAlwaysOnTop(true);
-        UI.setDivider(0);
+        ProcessingRunner.run(new TestEngine());
         ((JComponent)UI.theUI.canvas).addKeyListener(ada);
         UI.getFrame().addKeyListener(ada);
         UI.getFrame().addMouseListener(adapter);
         UI.getFrame().addMouseMotionListener(adapter1);
         bar.addMouseListener(adapter);
         bar.addMouseMotionListener(adapter);
-    }
-    private boolean dragged = false;
-    private void firstDrag() {
-        if (dragged) return;
-        dragged = true;
         UI.clearGraphics();
         UI.getGraphics().setColor(new Color(0,51,255));
         UI.getGraphics().fillRect(0,0,1000,1000);
@@ -57,7 +67,7 @@ public class TestWindow {
     private MouseMotionAdapter adapter1 = new MouseMotionAdapter() {
         @Override
         public void mouseDragged(MouseEvent e) {
-            firstDrag();
+            startGame();
             // get location of Window
             int thisX = UI.getFrame().getLocation().x;
             int thisY = UI.getFrame().getLocation().y;
@@ -71,6 +81,11 @@ public class TestWindow {
             UI.getFrame().setLocation(X, Y);
         }
     };
+    MouseAdapter adapter = new MouseAdapter() {
+        public void mousePressed(MouseEvent e) {
+            initialClick = e.getPoint();
+        }
+    };
     private TestEngine engine;
     private KeyAdapter ada = new KeyAdapter() {
         @Override
@@ -79,7 +94,6 @@ public class TestWindow {
                 engine.exit();
                 return;
             }
-            System.out.println(e.getKeyChar());
             engine.key = e.getKeyChar();
             engine.keyPressed();
         }

@@ -29,10 +29,14 @@ public class TestEngine extends PApplet {
     public ArrayList<Projectile> projectiles = new ArrayList<>();
 
     public static void main(String[] args) {
-        ProcessingRunner.run(new TestEngine());
+        new TestEngine();
     }
     public TestEngine() {
         window = new TestWindow(this);
+
+    }
+    public void bootProcessing() {
+        ProcessingRunner.run(this);
     }
     public void settings() {
         size(800, 600, P3D);
@@ -52,7 +56,6 @@ public class TestEngine extends PApplet {
         ((GLWindow)getSurface().getNative()).getGL().glEnable(GL.GL_CULL_FACE);
     }
     public void draw() {
-        System.out.println(frameRate);
         noStroke();
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
