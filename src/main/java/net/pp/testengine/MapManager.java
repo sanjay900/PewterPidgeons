@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by Klimpen on 21/04/2017.
@@ -54,6 +55,18 @@ public class MapManager implements GameObject{
         });
     }
 
+    public Location getRandomStartLocation(){
+        while(true){
+            Location random =  new Location(
+                    // makes it so we're not on the
+                    (int)(Math.random()*(xSize-1)+1),
+                    (int)(Math.random()*(ySize-1)+1),
+                    0);
+            if(!roomMap.get(random).isWall && !roomMap.get(random).isStair){
+                return random;
+            }
+        }
+    }
 
     public boolean isWall(Location location) {
         return roomMap.containsKey(location) && roomMap.get(location).isWall;

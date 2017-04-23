@@ -68,7 +68,7 @@ public class TestEngine extends PApplet {
             Arrays.stream(Models.values()).forEach(m -> m.load(this));
             ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
             manager = new MapManager(this,30,30,2);
-            player = new Player(manager.getStartLoc());
+            player = new Player(manager.getRandomStartLocation());
             playerMap.put(player.getPlayerName(), player);
             stickerList = new ArrayList<>();
             miniMap = new MiniMap(this);
