@@ -54,11 +54,15 @@ public class TestEngine extends PApplet {
         frameRate(144);
 //        musicManager = new MusicManager(this);
 //        musicManager.getMainTrack().play();
+        hud = new HUD(this);
     }
     boolean seedSet = false;
     boolean readyForSeed = false;
+    HUD hud;
     public void draw() {
         if (!readyForSeed) {
+            hint(PConstants.DISABLE_DEPTH_TEST);
+            hud.render(new Player(new Location(0,0,0)));
             return;
         }
         if (!seedSet) {
@@ -70,6 +74,7 @@ public class TestEngine extends PApplet {
             stickerList = new ArrayList<>();
             miniMap = new MiniMap(this);
             seedSet = true;
+            hud = new HUD(this);
         }
         noStroke();
         pushMatrix();
@@ -85,6 +90,7 @@ public class TestEngine extends PApplet {
         popMatrix();
         hint(PConstants.DISABLE_DEPTH_TEST);
         miniMap.render(player);
+        hud.render(player);
 
 //        stickerList.removeIf(sticker -> sticker.getLifetime()>50);
 //        stickerList.forEach(s -> s.render(this));
@@ -125,9 +131,11 @@ public class TestEngine extends PApplet {
     @Override
     public void mouseClicked(){
         stickerList.add(new Sticker(0, loadImage("sticker001.png"), mouseX, mouseY));
+        if (player.bullets <= 0) return;
         s.calculatePickPoints(mouseX,height-mouseY);
         Projectile f = new Projectile(s.ptStartPos.copy(),s.ptEndPos.copy());
         projectileMap.put(f.getId(),f);
+        player.bullets--;
     }
 }
 

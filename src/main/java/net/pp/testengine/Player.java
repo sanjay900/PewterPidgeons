@@ -10,6 +10,8 @@ import java.awt.*;
 import static processing.core.PApplet.radians;
 
 public class Player implements GameObject {
+    public int bullets = 8;
+
     public Player(Location start) {
         camPos = new PVector(-start.getX(), -start.getY()).mult(Room.ROOM_SIZE);
     }
@@ -19,8 +21,10 @@ public class Player implements GameObject {
         camPos = startPos;
         isLocal = false;
     }
-    boolean isLocal = true;
+    private boolean isLocal = true;
     int mines = 2;
+    @Getter
+    int health = 3;
     // variables for Dom's cameraw
     @Getter
     private PVector camRotation = new PVector();
@@ -89,10 +93,13 @@ public class Player implements GameObject {
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
+        if (engine.frameCount % engine.frameRate < 1) {
+            if (bullets < 8)
+                bullets++;
+        }
         if (engine.key == 'f' && engine.player == this) {
             placeMine(engine);
         }
-        System.out.println(blueBounds.width);
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
 //        camRot += -deltaX;  // calculate camera rotation. moving mouse to the right we expect clockwise rotation.
@@ -108,6 +115,7 @@ public class Player implements GameObject {
             engine.pushMatrix();
             engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
             engine.rotateX(PConstants.HALF_PI);
+            engine.rotateY(-camRot);  // reversed as it rotates world objects counter-clockwise
             engine.scale(5);
             Models.SCORPION.model.drawModel(blueBounds,engine);
             engine.popMatrix();
@@ -125,6 +133,9 @@ public class Player implements GameObject {
     }
     boolean hit = false;
     public void hit() {
+        if (!hit) {
+            health--;
+        }
         this.hit = true;
     }
 }
