@@ -46,6 +46,7 @@ public class Powerup extends Collectible {
         if (taken) return;
         pl.applyPowerup(type);
         taken = true;
+        engine.manager.collectibles.remove(this);
         engine.musicManager.getPopSound().play();
     }
 }
