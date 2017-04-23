@@ -12,6 +12,7 @@ public class MusicManager {
     private Sound bangSound;
     private Sound pewSound;
     private Sound screechSound;
+    private Sound popSound;
     //private Sound track3;
     //private Sound track4;
 
@@ -24,6 +25,7 @@ public class MusicManager {
             bangSound = new Sound((engine.dataFile(("gameSounds/bang.wav"))));
             pewSound = new Sound((engine.dataFile(("gameSounds/pew.wav"))));
             screechSound = new Sound((engine.dataFile(("gameSounds/screech.wav"))));
+            popSound = new Sound((engine.dataFile(("gameSounds/pop.wav"))));
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -40,4 +42,6 @@ public class MusicManager {
     public Sound getFightTrack() {
         return fightTrack;
     }
+
+    public Sound getPopSound() { return popSound; }
 }
