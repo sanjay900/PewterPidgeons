@@ -86,7 +86,7 @@ public class TestEngine extends PApplet {
         pushMatrix();
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
-        player.move(input.getMotion(),manager);
+        player.move(this,input.getMotion(),manager);
         projectileMap.values().forEach(Projectile::update);
         clear();
         player.render(this,blueBounds);

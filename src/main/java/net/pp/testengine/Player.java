@@ -1,6 +1,5 @@
 package net.pp.testengine;
 
-import ecs100.UI;
 import lombok.Getter;
 import lombok.Setter;
 import processing.core.PConstants;
@@ -44,7 +43,7 @@ public class Player implements GameObject {
     public void update() {
 
     }
-    public void move(PVector movement, MapManager manager) {
+    public void move(TestEngine engine, PVector movement, MapManager manager) {
         PVector lastLoc = camPos.copy();
         Location lastLoca = getLocation();
         movement = movement.copy();
@@ -53,7 +52,7 @@ public class Player implements GameObject {
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
         this.camPos.add(mvmt).add(mvmt);
         if (manager.isMine(getLocation(),this)) {
-            hit();
+            hit(engine);
             manager.getRoomMap().get(getLocation()).setPlacedMine(null);
         }
 //        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
@@ -133,9 +132,12 @@ public class Player implements GameObject {
         return projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y)) < 25;
     }
     boolean hit = false;
-    public void hit() {
+    public void hit(TestEngine engine) {
         if (!hit) {
             health--;
+        }
+        if (health <= 0) {
+            engine.musicManager.getScreechSound().play();
         }
         this.hit = true;
     }

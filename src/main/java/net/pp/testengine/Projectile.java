@@ -40,7 +40,7 @@ public class Projectile implements GameObject {
         }
         for (Player player : engine.playerMap.values()) {
             if (player.collides(engine, this)) {
-                player.hit();
+                player.hit(engine);
                 dead = true;
                 return;
             }
