@@ -35,8 +35,8 @@ public class MapGenerator {
     private Location generateStaircase(Location startLoc) {
         if (startLoc.getZ() == zSize) return null;
         Location loc = null;
-        while (loc == null || roomMap.get(loc).isSolid() || roomMap.get(loc.getRelative(Direction.EAST)).isSolid()) {
-            loc = new Location((int)(te.random(1,xSize)),(int)(te.random(1,ySize)),startLoc.getZ());
+        while (loc == null || roomMap.get(loc).isSolid() || !roomMap.get(loc.getRelative(Direction.EAST)).isSolid()) {
+            loc = new Location((int)(te.random(2,xSize-1)),(int)(te.random(2,ySize-1)),startLoc.getZ());
         }
         roomMap.get(loc).isStair = true;
         manager.stairMap.putIfAbsent(loc.getZ(),new ArrayList<>());
