@@ -124,8 +124,10 @@ public class Player implements GameObject {
 
     public boolean collides(TestEngine engine, Projectile projectile) {
         if(projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y)) < 25){
+            engine.musicManager.getBangSound().stop();
             engine.musicManager.getBangSound().play();
         } else {
+            engine.musicManager.getPewSound().stop();
             engine.musicManager.getPewSound().play();
         }
         return projectile.getPosition().dist(new PVector(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y)) < 25;

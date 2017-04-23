@@ -9,6 +9,7 @@ import processing.core.PConstants;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
+import javax.sound.sampled.LineEvent;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -53,6 +54,13 @@ public class TestEngine extends PApplet {
         musicManager = new MusicManager(this);
         musicManager.getFightTrack().setVolume(musicManager.getFightTrack().getVolume()/2);
         musicManager.getFightTrack().play();
+        musicManager.getFightTrack().addLineListener((event) -> {
+            if(event.getType().equals(LineEvent.Type.STOP)){
+                musicManager.getFightTrack().stop();
+                musicManager.getFightTrack().play();
+            }
+        });
+
         hud = new HUD(this);
     }
     boolean seedSet = false;
