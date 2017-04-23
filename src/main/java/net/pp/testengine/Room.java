@@ -84,7 +84,8 @@ public class Room implements GameObject{
         }
         engine.shape(rendered);
         engine.popMatrix();
-        collectible.render(engine,bounds);
+        if (collectible != null)
+            collectible.render(engine,bounds);
     }
 
     private void renderToShape(TestEngine engine, Rectangle bounds) {
