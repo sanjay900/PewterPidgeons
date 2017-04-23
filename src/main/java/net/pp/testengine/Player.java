@@ -22,6 +22,7 @@ public class Player implements GameObject {
         isLocal = false;
     }
     private boolean isLocal = true;
+    private boolean isDead;
     @Getter
     int health = 3;
     // variables for Dom's cameraw
@@ -137,8 +138,13 @@ public class Player implements GameObject {
             health--;
         }
         if (health <= 0) {
+            isDead = true;
             engine.musicManager.getScreechSound().play();
         }
         this.hit = true;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }

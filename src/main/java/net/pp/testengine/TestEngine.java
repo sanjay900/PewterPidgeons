@@ -6,6 +6,7 @@ import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PImage;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 
@@ -29,6 +30,8 @@ public class TestEngine extends PApplet {
     ArrayList<Sticker> stickerList;
     ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
     MusicManager musicManager;
+    PImage lose;
+    PImage win;
 
     public static void main(String[] args) {
         new TestEngine();
@@ -62,11 +65,18 @@ public class TestEngine extends PApplet {
         });
 
         hud = new HUD(this);
+        lose = loadImage("lose_msg.png");
+        win = loadImage("win_msg.png");
     }
     boolean seedSet = false;
     boolean readyForSeed = false;
     HUD hud;
     public void draw() {
+        if (player.isDead()){
+            hint(PConstants.DISABLE_DEPTH_TEST);
+            image(lose, 0, 0, width, height);
+                    return;
+        }
         if (!readyForSeed) {
             hint(PConstants.DISABLE_DEPTH_TEST);
             return;

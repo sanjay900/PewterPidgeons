@@ -8,6 +8,7 @@ public class HUD {
     TestEngine engine;
     PImage[] hearts = new PImage[4];
     PImage mine2d;
+
     public HUD(TestEngine engine) {
         this.engine = engine;
         hearts[0] = engine.loadImage("0-hearts.png");
