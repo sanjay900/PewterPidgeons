@@ -50,8 +50,8 @@ public class TestEngine extends PApplet {
     }
     public void setup() {
         frameRate(60);
-//        musicManager = new MusicManager(this);
-//        musicManager.getMainTrack().play();
+        musicManager = new MusicManager(this);
+        musicManager.getMainTrack().play();
         hud = new HUD(this);
     }
     boolean seedSet = false;
