@@ -56,28 +56,28 @@ public class Player implements GameObject {
         Collectible c = manager.getRoomMap().get(getLocation()).getCollectible();
         if (c != null) {
             c.onCollect(engine, this);
-//        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
-            if (manager.isWall(getLocation())) {
-                camPos = lastLoc;
-            } else if (manager.isStair(getLocation())) {
-                // camPos.z = (getLocation().getZ()*100) + (camPos.x % 100) + 100;
-                if (manager.isStair(lastLoca) || lastLoca.getX() > getLocation().getX()) {
-                    camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
-                    return;
-                } else {
-                    camPos = lastLoc;
-                }
-
-            } else if (manager.isStair(lastLoca) && ((camPos.z) % 100) > 60) {
-                camPos.z = (getLocation().getZ() * 100) + 100;
-            } else if (manager.isStair(getLocation().getRelative(Direction.DOWN))) {
-                camPos.z = (getLocation().getZ() * 100) - 100;
-                camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
-            } else {
-                camPos.sub(mvmt);
-            }
-            camPos.z = (getLocation().getZ() * 100);
         }
+//        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
+        if (manager.isWall(getLocation())) {
+            camPos = lastLoc;
+        } else if (manager.isStair(getLocation())) {
+            // camPos.z = (getLocation().getZ()*100) + (camPos.x % 100) + 100;
+            if (manager.isStair(lastLoca) || lastLoca.getX() > getLocation().getX()) {
+                camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
+                return;
+            } else {
+                camPos = lastLoc;
+            }
+
+        } else if (manager.isStair(lastLoca) && ((camPos.z) % 100) > 60) {
+            camPos.z = (getLocation().getZ() * 100) + 100;
+        } else if (manager.isStair(getLocation().getRelative(Direction.DOWN))) {
+            camPos.z = (getLocation().getZ() * 100) - 100;
+            camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
+        } else {
+            camPos.sub(mvmt);
+        }
+        camPos.z = (getLocation().getZ() * 100);
     }
 
     public Location getLocation() {
