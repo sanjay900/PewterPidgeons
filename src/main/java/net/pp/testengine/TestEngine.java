@@ -57,12 +57,7 @@ public class TestEngine extends PApplet {
     boolean seedSet = false;
     boolean readyForSeed = false;
     HUD hud;
-    boolean hadFocus = true;
     public void draw() {
-        if (hadFocus != focused) {
-            hadFocus = focused;
-            input.reset();
-        }
         if (!readyForSeed) {
             hint(PConstants.DISABLE_DEPTH_TEST);
             return;
@@ -125,10 +120,12 @@ public class TestEngine extends PApplet {
 
     @Override
     public void keyPressed() {
+        if (!focused) return;
         input.keyPressed(key);
     }
     @Override
     public void keyReleased() {
+        if (!focused) return;
         input.keyReleased(key);
     }
     @Override
