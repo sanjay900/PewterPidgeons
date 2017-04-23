@@ -105,6 +105,7 @@ public class TestWindow {
     private KeyAdapter ada = new KeyAdapter() {
         @Override
         public void keyPressed(KeyEvent e) {
+            if (!UI.getFrame().isFocused()) return;
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 engine.exit();
                 return;
@@ -115,6 +116,7 @@ public class TestWindow {
 
         @Override
         public void keyReleased(KeyEvent e) {
+            if (!UI.getFrame().isFocused()) return;
             engine.key = e.getKeyChar();
             engine.keyReleased();
         }
