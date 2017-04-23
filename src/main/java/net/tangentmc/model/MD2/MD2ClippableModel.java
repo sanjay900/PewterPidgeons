@@ -98,7 +98,8 @@ public class MD2ClippableModel {
                 float v = (float)this.uvs[tri[3 + i]][1] / (float)this.header.getSkinheight();
                 int index = tri[i];
 
-                this.applet.vertex(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z, u, v);
+                PVector vert = vertlist[index].getVert();
+                this.applet.vertex(vert.x, vert.y, vert.z, u, v);
                 float[] normals = NormalTable.normalTable[vertlist[index].getLightnormalindex()];
                 this.applet.normal(normals[0], normals[1], normals[2]);
             }
