@@ -10,7 +10,7 @@ import java.awt.*;
 import static processing.core.PApplet.radians;
 
 public class Player implements GameObject {
-    public int bullets = 8;
+    public int bullets = 4;
 
     public Player(Location start) {
         camPos = new PVector(-start.getX(), -start.getY()).mult(Room.ROOM_SIZE);
@@ -89,7 +89,7 @@ public class Player implements GameObject {
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
         if (engine.frameCount % engine.frameRate < 1) {
-            if (bullets < 8)
+            if (bullets < 4)
                 bullets++;
             if (hasSpeed)
                 speedTicks++;
