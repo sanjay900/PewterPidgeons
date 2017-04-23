@@ -181,4 +181,8 @@ public class Room implements GameObject{
     public boolean isSolid() {
         return isWall || isStair;
     }
+
+    public void addPowerup(int type) {
+        entities.add(new Powerup(this.position));
+    }
 }

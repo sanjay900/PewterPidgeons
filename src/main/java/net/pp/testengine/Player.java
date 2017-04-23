@@ -23,7 +23,6 @@ public class Player implements GameObject {
         isLocal = false;
     }
     private boolean isLocal = true;
-    int mines = 2;
     @Getter
     int health = 3;
     // variables for Dom's cameraw
@@ -44,13 +43,6 @@ public class Player implements GameObject {
     @Override
     public void update() {
 
-    }
-    public void placeMine(TestEngine engine) {
-        if (mines <= 0) return;
-        Room r = engine.manager.getRoomMap().get(getLocation());
-        if (r.getPlacedMine() != null) return;
-        r.setPlacedMine(this);
-        mines--;
     }
     public void move(PVector movement, MapManager manager) {
         PVector lastLoc = camPos.copy();
@@ -97,9 +89,6 @@ public class Player implements GameObject {
         if (engine.frameCount % engine.frameRate < 1) {
             if (bullets < 8)
                 bullets++;
-        }
-        if (engine.key == 'f' && engine.player == this) {
-            placeMine(engine);
         }
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);

@@ -85,6 +85,14 @@ public class MapGenerator {
             roomMap.put(loc, new Room(manager, loc, false));
         } else {
             roomMap.get(loc).isWall=false;
+            addRandomItems(loc);
+        }
+    }
+
+    private void addRandomItems(Location loc) {
+        if (te.random(0,5) > 3) {
+            int type = (int) te.random(0,2);
+            roomMap.get(loc).addPowerup(type);
         }
     }
 

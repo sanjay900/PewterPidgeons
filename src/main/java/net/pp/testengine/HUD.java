@@ -20,9 +20,6 @@ public class HUD {
         engine.fill(0);
         engine.image(hearts[p.health],20,0);
         engine.textSize(40);
-        engine.text(p.bullets+"/8",20,engine.height-20);
-        engine.image(mine2d,60,engine.height-170,150,150);
-
-        engine.text("x"+p.mines,180,engine.height-20);
+        engine.text("Bullets: "+p.bullets+"/8",20,engine.height-20);
     }
 }

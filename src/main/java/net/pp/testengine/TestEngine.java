@@ -66,7 +66,7 @@ public class TestEngine extends PApplet {
         if (!seedSet) {
             Arrays.stream(Models.values()).forEach(m -> m.load(this));
             ((GLWindow)getSurface().getNative()).setTitle(GAME_NAME);
-            manager = new MapManager(this,30,30,2);
+            manager = new MapManager(this,30,30,1);
             player = new Player(manager.getRandomStartLocation());
             playerMap.put(player.getPlayerName(), player);
             stickerList = new ArrayList<>();

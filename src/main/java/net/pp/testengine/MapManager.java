@@ -3,6 +3,7 @@ package net.pp.testengine;
 import lombok.Getter;
 
 import java.awt.*;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -17,6 +18,7 @@ public class MapManager implements GameObject{
     @Getter
     private HashMap<Location,Room> roomMap = new HashMap<>();
     HashMap<Integer,ArrayList<Room>> stairMap = new HashMap<>();
+    ArrayList<Collectible> collectibles = new ArrayList<>();
     private int xSize;
     private int ySize;
     private int zSize;
