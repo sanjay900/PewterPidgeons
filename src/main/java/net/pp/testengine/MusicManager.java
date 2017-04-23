@@ -17,7 +17,7 @@ public class MusicManager {
 
     public MusicManager(TestEngine engine) {
         try {
-            mainTrack = new Sound(engine.dataFile("bgTrack3.wav"));
+            //mainTrack = new Sound(engine.dataFile("bgTrack3.wav"));
             fightTrack = new Sound(engine.dataFile("bgTrack1.wav"));
             /*track3 = new Sound(new File("bgTrack2.wav"));
             track4 = new Sound(new File("bgTrack4.wav"));*/
@@ -31,7 +31,7 @@ public class MusicManager {
 
     public Sound getBangSound() { return bangSound; }
 
-    public Sound getMainTrack() {return mainTrack; }
+    //public Sound getMainTrack() {return mainTrack; }
 
     public Sound getPewSound() { return pewSound; }
 
