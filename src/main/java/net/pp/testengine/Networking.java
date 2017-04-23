@@ -88,12 +88,11 @@ public class Networking {
                     return;
                 }
                 p.setCamPos(new PVector(in.readFloat(),in.readFloat(),in.readFloat()));
-                in.readBoolean();
             } else {
                 engine.playerMap.put(s, p=new Player(s,new PVector(in.readFloat(),in.readFloat(),in.readFloat())));
-                in.readBoolean();
             }
             p.setCamRot(in.readFloat());
+            in.readBoolean();
         } else if (magic.startsWith("BULLET")) {
             int id = in.readInt();
             PVector mot = new PVector(in.readFloat(),in.readFloat(),in.readFloat());
