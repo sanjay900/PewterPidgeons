@@ -56,6 +56,7 @@ public class TestEngine extends PApplet {
         musicManager.getFightTrack().play();
         musicManager.getFightTrack().addLineListener((event) -> {
             if(event.getType().equals(LineEvent.Type.STOP)){
+                musicManager.getFightTrack().stop();
                 musicManager.getFightTrack().play();
             }
         });
