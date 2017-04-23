@@ -9,7 +9,6 @@ import net.pp.testengine.ScreenCoord2WorldCoord;
 import net.pp.testengine.TestEngine;
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PShape;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -63,15 +62,6 @@ public class MD2ClippableModel {
         animationList.add(new Animation(firstFrame, lastFrame, 0, 0.0F, 1.0F, 1.0F));
         return (Animation[])animationList.toArray(new Animation[animationList.size()]);
     }
-    public void drawModel(Rectangle clipBounds, PShape engine) {
-        if(this.animation instanceof TweenAnimation && ((TweenAnimation)this.animation).isIntermediate()) {
-            this.animation = ((TweenAnimation)this.animation).getNext();
-        }
-
-        this.applet.textureMode(1);
-        this.renderFrame(clipBounds,engine);
-        this.animation.nextFrame();
-    }
     public void drawModel(Rectangle clipBounds, TestEngine engine) {
         if(this.animation instanceof TweenAnimation && ((TweenAnimation)this.animation).isIntermediate()) {
             this.animation = ((TweenAnimation)this.animation).getNext();
@@ -85,12 +75,8 @@ public class MD2ClippableModel {
     private void renderFrame(Rectangle clipBounds, TestEngine engine) {
         ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
         Vertex[] vertlist = this.interpolate();
-        int triangle;
-        short[][] var2 = this.tris;
-        triangle = var2.length;
-        nextCmd:
-        for(int var4 = 0; var4 < triangle; ++var4) {
-            short[] tri = var2[var4];
+        nextTriangle:
+        for(short[] tri: tris) {
             this.applet.beginShape(8);
             this.applet.texture(this.texture);
             if (clipBounds != null) {
@@ -98,32 +84,11 @@ public class MD2ClippableModel {
                     int index = tri[i];
                     int x = (int) s.screenXImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
                     int y = (int) s.screenYImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
-                    if (!clipBounds.contains(new Point(x, y))) continue nextCmd;
+                    if (!clipBounds.contains(new Point(x, y))) {
+                        continue nextTriangle;
+                    }
                 }
             }
-            for(int i = 0; i < 3; ++i) {
-                float u = (float)this.uvs[tri[3 + i]][0] / (float)this.header.getSkinwidth();
-                float v = (float)this.uvs[tri[3 + i]][1] / (float)this.header.getSkinheight();
-                int index = tri[i];
-
-                this.applet.vertex(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z, u, v);
-                float[] normals = NormalTable.normalTable[vertlist[index].getLightnormalindex()];
-                this.applet.normal(normals[0], normals[1], normals[2]);
-            }
-
-            this.applet.endShape();
-        }
-
-    }
-    private void renderFrame(Rectangle clipBounds, PShape engine) {
-        Vertex[] vertlist = this.interpolate();
-        int triangle;
-        short[][] var2 = this.tris;
-        triangle = var2.length;
-        for(int var4 = 0; var4 < triangle; ++var4) {
-            short[] tri = var2[var4];
-            this.applet.beginShape(8);
-            this.applet.texture(this.texture);
             for(int i = 0; i < 3; ++i) {
                 float u = (float)this.uvs[tri[3 + i]][0] / (float)this.header.getSkinwidth();
                 float v = (float)this.uvs[tri[3 + i]][1] / (float)this.header.getSkinheight();
