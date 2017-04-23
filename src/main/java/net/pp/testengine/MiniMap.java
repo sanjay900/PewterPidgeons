@@ -38,6 +38,9 @@ public class MiniMap {
 
             }
         }
-        te.popMatrix();
+        for(Collectible c : te.manager.collectibles){
+            te.fill(0,255,0);
+            te.ellipse(player.getRelative(c.getPosition()).x*5, player.getRelative(c.getPosition()).y*5, 5, 5);
+        }
     }
 }

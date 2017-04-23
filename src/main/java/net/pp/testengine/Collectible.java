@@ -4,5 +4,5 @@ import lombok.Getter;
 
 public abstract class Collectible implements GameObject {
     @Getter
-    Location location;
+    Location position;
 }
