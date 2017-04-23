@@ -2,6 +2,8 @@ package net.pp.testengine;
 
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
+
 /**
  * Created by Klimpen on 22/04/2017.
  */
@@ -29,9 +31,12 @@ public class MiniMap {
             }
             te.ellipse(player.getRelative(p.getLocation()).x*5,player.getRelative(p.getLocation()).y*5,5,5);
         }
-        for(Room r : te.manager.stairMap.values()){
-            te.fill(0,255,255);
-            te.ellipse(player.getRelative(r.getPosition()).x*5, player.getRelative(r.getPosition()).y*5, 5, 5);
+        for(ArrayList<Room> rooms : te.manager.stairMap.values()){
+            for (Room r: rooms) {
+                te.fill(0,255,255);
+                te.ellipse(player.getRelative(r.getPosition()).x*5, player.getRelative(r.getPosition()).y*5, 5, 5);
+
+            }
         }
         te.popMatrix();
     }

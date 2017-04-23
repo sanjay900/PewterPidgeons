@@ -3,6 +3,7 @@ package net.pp.testengine;
 import lombok.Getter;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ public class MapManager implements GameObject{
     private TestEngine te;
     @Getter
     private HashMap<Location,Room> roomMap = new HashMap<>();
-    HashMap<Integer,Room> stairMap = new HashMap<>();
+    HashMap<Integer,ArrayList<Room>> stairMap = new HashMap<>();
     private int xSize;
     private int ySize;
     private int zSize;
@@ -37,12 +38,15 @@ public class MapManager implements GameObject{
         mg.createMap(startLoc);
     }
     public float distanceToStair(Room r) {
-        Room stair = stairMap.get(r.position.getZ()-1);
-        Room stair2 = stairMap.get(r.position.getZ()+1);
-        if (stair == null && stair2 == null) return 1000;
-        float dist1 = stair == null?100:r.position.distance(stair.position);
-        float dist2 = stair2 == null?100:r.position.distance(stair2.position);
-        return Math.min(dist1,dist2);
+        float min = Float.MAX_VALUE;
+        for(ArrayList<Room> stairArray : stairMap.values()){
+            for(Room s : stairArray){
+                if (s == null) return 1000;
+                float dist = s == null?100:r.position.distance(s.position);
+                min = Math.min(min,dist);
+            }
+        }
+        return min;
     }
     @Override
     public void update() {

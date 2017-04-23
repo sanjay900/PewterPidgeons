@@ -24,19 +24,23 @@ public class MapGenerator {
         // then recurse
         createRoom(startLoc);
         generateRoom(startLoc);
-        Location stair = generateStaircase(startLoc);
+        Location stair = null;
+        for(int i=0; i<3; i++) {
+            stair = generateStaircase(startLoc);
+        }
         if (stair == null) return;
         createMap(stair.getRelative(Direction.UP));
     }
 
     private Location generateStaircase(Location startLoc) {
         if (startLoc.getZ() == zSize) return null;
-        Location loc = startLoc;
-        while (loc.equals(startLoc) || roomMap.get(loc).isWall || roomMap.get(loc.getRelative(Direction.EAST)).isWall) {
-            loc = new Location((int)(te.random(xSize)),(int)(te.random(ySize)),startLoc.getZ());
+        Location loc = null;
+        while (loc == null || roomMap.get(loc).isSolid() || roomMap.get(loc.getRelative(Direction.EAST)).isSolid()) {
+            loc = new Location((int)(te.random(1,xSize)),(int)(te.random(1,ySize)),startLoc.getZ());
         }
         roomMap.get(loc).isStair = true;
-        manager.stairMap.put(loc.getZ(),roomMap.get(loc));
+        manager.stairMap.putIfAbsent(loc.getZ(),new ArrayList<>());
+        manager.stairMap.get(loc.getZ()).add(roomMap.get(loc));
         return loc;
     }
 
@@ -51,7 +55,9 @@ public class MapGenerator {
 
         for(int i=0; i<adjRoomList.size(); i++){
             if(i<numWalls){
-                createWall(adjRoomList.get(i));
+                if(!roomMap.containsKey(adjRoomList.get(i).getRelative(Direction.DOWN))||(!roomMap.get(adjRoomList.get(i).getRelative(Direction.DOWN)).isStair)) {
+                        createWall(adjRoomList.get(i));
+                }
             } else {
                 createRoom(adjRoomList.get(i));
             }

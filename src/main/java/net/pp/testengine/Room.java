@@ -177,4 +177,8 @@ public class Room implements GameObject{
         imageHashMap.put(image,image3);
         return image3;
     }
+
+    public boolean isSolid() {
+        return isWall || isStair;
+    }
 }
