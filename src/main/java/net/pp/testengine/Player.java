@@ -53,10 +53,6 @@ public class Player implements GameObject {
         movement.x = 0;
         PVector mvmt = movement.rotate(-camRot).mult(moveAmount + (hasSpeed ? 0.3f : 0f));
         this.camPos.add(mvmt).add(mvmt);
-        Collectible c = manager.getRoomMap().get(getLocation()).getCollectible();
-        if (c != null) {
-            c.onCollect(engine, this);
-        }
 //        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
         if (manager.isWall(getLocation())) {
             camPos = lastLoc;
@@ -78,6 +74,10 @@ public class Player implements GameObject {
             camPos.sub(mvmt);
         }
         camPos.z = (getLocation().getZ() * 100);
+        Collectible c = manager.getRoomMap().get(getLocation()).getCollectible();
+        if (c != null) {
+            c.onCollect(engine, this);
+        }
     }
 
     public Location getLocation() {

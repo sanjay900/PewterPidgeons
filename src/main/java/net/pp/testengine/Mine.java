@@ -17,7 +17,7 @@ public class Mine extends Collectible {
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
-        if (activsted) return;
+        activsted = false;
         engine.pushMatrix();
         engine.translate(0,Room.ROOM_SIZE/2,0);
         engine.rotateX(PConstants.HALF_PI);
@@ -28,8 +28,9 @@ public class Mine extends Collectible {
 
     @Override
     void onCollect(TestEngine engine,Player pl) {
-        if (activsted) return;
+        if (!activsted) return;
         pl.hit(engine);
-        activsted = true;
+        engine.manager.getCollectibles().remove(this);
+        activsted = false;
     }
 }

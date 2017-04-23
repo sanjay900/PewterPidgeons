@@ -67,12 +67,7 @@ public class Room implements GameObject{
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*(Room.ROOM_SIZE+0.01f)),position.getY()*Room.ROOM_SIZE);
         if (collectible != null) {
-            engine.pushMatrix();
-            engine.translate(0,Room.ROOM_SIZE/2,0);
-            engine.rotateX(PConstants.HALF_PI);
-            engine.scale(2);
-            Models.MINE.model.drawModel(bounds,engine);
-            engine.popMatrix();
+            collectible.render(engine,bounds);
         }
         if (!isStair)
             engine.scale(Room.ROOM_SIZE/2);
