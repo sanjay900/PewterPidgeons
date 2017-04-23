@@ -1,10 +1,12 @@
 package net.pp.testengine;
 
+import processing.core.PConstants;
 import processing.core.PVector;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Random;
 
 /**
  * Created by Klimpen on 22/04/2017.
@@ -29,9 +31,9 @@ public class Networking {
 
                             DataOutputStream ds = new DataOutputStream(clientSocket.getOutputStream());
                             ds.writeUTF("SYNC");
-                            //TODO: Pick a random seed!
-                            ds.writeLong(31);
-                            engine.setSeed(31);
+                            long seed = new Random().nextLong();
+                            ds.writeLong(seed);
+                            engine.setSeed(seed);
                             createSocketThread(clientSocket, ds);
                         } catch (IOException e) {
                             e.printStackTrace();
