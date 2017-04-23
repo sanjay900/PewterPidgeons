@@ -2,7 +2,6 @@ package net.pp.testengine;
 
 
 import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.GL;
 import ecs100.UI;
 import net.tangentmc.processing.ProcessingRunner;
 import processing.core.PApplet;
@@ -14,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TestEngine extends PApplet {
@@ -59,7 +57,12 @@ public class TestEngine extends PApplet {
     boolean seedSet = false;
     boolean readyForSeed = false;
     HUD hud;
+    boolean hadFocus = true;
     public void draw() {
+        if (hadFocus != focused) {
+            hadFocus = focused;
+            input.reset();
+        }
         if (!readyForSeed) {
             hint(PConstants.DISABLE_DEPTH_TEST);
             return;

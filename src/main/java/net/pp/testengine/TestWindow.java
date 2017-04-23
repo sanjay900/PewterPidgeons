@@ -71,6 +71,13 @@ public class TestWindow {
         //Fiddle with the opacity now that it is undecorated
         UI.getFrame().setOpacity(0.5f);
         UI.getFrame().setSize(new Dimension(400,400));
+        UI.getFrame().addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                engine.input.reset();
+            }
+        });
     }
 
     private MouseMotionAdapter adapter1 = new MouseMotionAdapter() {

@@ -47,4 +47,9 @@ public class KeyInput {
 
         }
     }
+
+    public void reset() {
+        motion.x = 0;
+        motion.y = 0;
+    }
 }
