@@ -17,7 +17,7 @@ public class Mine extends Collectible {
 
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
-        activsted = false;
+        if (!activsted) return;
         engine.pushMatrix();
         engine.translate(0,Room.ROOM_SIZE/2,0);
         engine.rotateX(PConstants.HALF_PI);
