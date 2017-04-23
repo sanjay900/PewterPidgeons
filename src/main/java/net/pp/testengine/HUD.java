@@ -21,6 +21,6 @@ public class HUD {
         engine.fill(0);
         engine.image(hearts[p.health],20,0);
         engine.textSize(40);
-        engine.text("Bullets: "+p.bullets+"/8",20,engine.height-20);
+        engine.text("Bullets: "+p.bullets+"/4",20,engine.height-20);
     }
 }

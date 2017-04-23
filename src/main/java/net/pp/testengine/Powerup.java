@@ -38,7 +38,7 @@ public class Powerup extends Collectible {
         }
 
         engine.popMatrix();
-        rotZ++;
+        rotZ+=0.01;
     }
 
     @Override
