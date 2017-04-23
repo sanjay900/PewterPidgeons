@@ -82,9 +82,13 @@ public class MD2ClippableModel {
             if (clipBounds != null) {
                 for (int i = 0; i < 3; ++i) {
                     int index = tri[i];
-                    int x = (int) s.screenXImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
-                    int y = (int) s.screenYImpl(vertlist[index].getVert().x, vertlist[index].getVert().y, vertlist[index].getVert().z,engine);
+                    PVector vert = vertlist[index].getVert();
+                    int x = (int) s.screenXImpl(vert.x, vert.y, vert.z,engine);
+                    int y = (int) s.screenYImpl(vert.x, vert.y, vert.z,engine);
                     if (!clipBounds.contains(new Point(x, y))) {
+                        System.out.println(vert);
+                        System.out.println(new PVector(x,y));
+                        System.out.println(clipBounds);
                         continue nextTriangle;
                     }
                 }
