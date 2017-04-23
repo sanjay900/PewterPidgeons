@@ -115,8 +115,7 @@ public class Player implements GameObject {
             engine.pushMatrix();
             engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
             engine.rotateX(PConstants.HALF_PI);
-            engine.rotateZ(-camRot);  // reversed as it rotates world objects counter-clockwise
-            System.out.println(camRot);
+            engine.rotateZ(-camRot-PConstants.HALF_PI);  // reversed as it rotates world objects counter-clockwise
             engine.scale(5);
             Models.SCORPION.model.drawModel(blueBounds,engine);
             engine.popMatrix();
