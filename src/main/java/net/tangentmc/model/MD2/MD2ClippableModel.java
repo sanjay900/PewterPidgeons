@@ -60,7 +60,7 @@ public class MD2ClippableModel {
         }
 
         animationList.add(new Animation(firstFrame, lastFrame, 0, 0.0F, 1.0F, 1.0F));
-        return (Animation[])animationList.toArray(new Animation[animationList.size()]);
+        return animationList.toArray(new Animation[animationList.size()]);
     }
     public void drawModel(Rectangle clipBounds, TestEngine engine) {
         if(this.animation instanceof TweenAnimation && ((TweenAnimation)this.animation).isIntermediate()) {
