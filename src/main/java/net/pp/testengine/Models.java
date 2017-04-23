@@ -8,7 +8,7 @@ import processing.core.PApplet;
 import java.io.IOException;
 
 public enum Models {
-    SCORPION("scorpion.md2","scorpion.png"),STAIR("stairs.md2","stairs.png"),MINE("mine.md2","mine.png");
+    SCORPION("scorpion.md2","scorpion.png"),STAIR("stairs.md2","step_texture.png"),MINE("mine.md2","mine.png");
     public Animation animation;
 
     Models(String modelName, String imageName) {
