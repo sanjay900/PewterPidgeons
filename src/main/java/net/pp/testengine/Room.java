@@ -23,15 +23,14 @@ import static processing.core.PConstants.QUADS;
 @ToString
 @AllArgsConstructor
 public class Room implements GameObject{
-    @Getter
-    @Setter
-    private Player placedMine = null;
     private MapManager manager;
     @Getter
     Location position;
     public static final int ROOM_SIZE = 100;
     public boolean isWall;
-    List<GameObject> entities = new ArrayList<>();
+    @Getter
+    @Setter
+    private Collectible collectible = null;
     public boolean isStair;
 
 
@@ -47,7 +46,7 @@ public class Room implements GameObject{
     }
     @Override
     public void update() {
-        entities.forEach(GameObject::update);
+        if (collectible != null) collectible.update();
     }
     PImage wall;
     PImage floor;
@@ -67,7 +66,7 @@ public class Room implements GameObject{
         }
         engine.pushMatrix();
         engine.translate(position.getX()*Room.ROOM_SIZE,(-position.getZ()*(Room.ROOM_SIZE+0.01f)),position.getY()*Room.ROOM_SIZE);
-        if (placedMine != null) {
+        if (collectible != null) {
             engine.pushMatrix();
             engine.translate(0,Room.ROOM_SIZE/2,0);
             engine.rotateX(PConstants.HALF_PI);
@@ -85,7 +84,7 @@ public class Room implements GameObject{
         }
         engine.shape(rendered);
         engine.popMatrix();
-        entities.forEach(o -> o.render(engine, bounds));
+        collectible.render(engine,bounds);
     }
 
     private void renderToShape(TestEngine engine, Rectangle bounds) {
@@ -182,7 +181,13 @@ public class Room implements GameObject{
         return isWall || isStair;
     }
 
-    public void addPowerup(int type) {
-        entities.add(new Powerup(this.position));
+    public void setPowerup(int type) {
+        Collectible c = new Powerup(this.position,type);
+        this.collectible = c;
+        manager.getCollectibles().add(c);
+    }
+    public void setMine() {
+        this.collectible = new Mine(position);
+        manager.getCollectibles().add(collectible);
     }
 }

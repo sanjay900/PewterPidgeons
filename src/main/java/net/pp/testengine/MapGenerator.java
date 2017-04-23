@@ -91,8 +91,8 @@ public class MapGenerator {
 
     private void addRandomItems(Location loc) {
         if (te.random(0,5) > 3) {
-            int type = (int) te.random(0,2);
-            roomMap.get(loc).addPowerup(type);
+            int type = (int) te.random(0,3);
+            roomMap.get(loc).setPowerup(type);
         }
     }
 

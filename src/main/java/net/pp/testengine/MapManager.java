@@ -3,10 +3,8 @@ package net.pp.testengine;
 import lombok.Getter;
 
 import java.awt.*;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 
 /**
  * Created by Klimpen on 21/04/2017.
@@ -18,6 +16,7 @@ public class MapManager implements GameObject{
     @Getter
     private HashMap<Location,Room> roomMap = new HashMap<>();
     HashMap<Integer,ArrayList<Room>> stairMap = new HashMap<>();
+    @Getter
     ArrayList<Collectible> collectibles = new ArrayList<>();
     private int xSize;
     private int ySize;
@@ -80,8 +79,5 @@ public class MapManager implements GameObject{
 
     public boolean isStair(Location location) {
         return roomMap.containsKey(location) && roomMap.get(location).isStair ;
-    }
-    public boolean isMine(Location location, Player toTest) {
-        return roomMap.containsKey(location) && roomMap.get(location).getPlacedMine() != null && roomMap.get(location).getPlacedMine() != toTest;
     }
 }

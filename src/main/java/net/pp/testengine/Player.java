@@ -35,7 +35,7 @@ public class Player implements GameObject {
     @Setter
     private float camRot = 0.0f;  // turns the camera anti-clockwise radians as if viewed from above (worldspace). 0 means walking forwards increases camPos.y. 90 means walking forwards increases camPos.x.
     private float moveAmount = 0.5f;
-    private float rotSpeed = 1.2f;
+    private float rotSpeed = 300;
     @Getter
     @Setter
     private String playerName = String.valueOf(Math.random()*Integer.MAX_VALUE);
@@ -48,47 +48,55 @@ public class Player implements GameObject {
         PVector lastLoc = camPos.copy();
         Location lastLoca = getLocation();
         movement = movement.copy();
-        camRot += movement.x / 300;
+        //TODO: config powerup to liking
+        camRot += movement.x / (300 - (hasSpeed ? 100 : 0));
         movement.x = 0;
-        PVector mvmt = movement.rotate(-camRot).mult(moveAmount);
+        PVector mvmt = movement.rotate(-camRot).mult(moveAmount + (hasSpeed ? 0.3f : 0f));
         this.camPos.add(mvmt).add(mvmt);
-        if (manager.isMine(getLocation(),this)) {
-            hit(engine);
-            manager.getRoomMap().get(getLocation()).setPlacedMine(null);
-        }
+        Collectible c = manager.getRoomMap().get(getLocation()).getCollectible();
+        if (c != null) {
+            c.onCollect(engine, this);
 //        System.out.println((getLocation().getZ()*100) + ((camPos.x-50) % 100) + 100);
-        if (manager.isWall(getLocation())) {
-            camPos = lastLoc;
-        } else if (manager.isStair(getLocation())) {
-            // camPos.z = (getLocation().getZ()*100) + (camPos.x % 100) + 100;
-            if (manager.isStair(lastLoca) || lastLoca.getX() > getLocation().getX()) {
-                camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
-                return;
-            } else {
+            if (manager.isWall(getLocation())) {
                 camPos = lastLoc;
-            }
+            } else if (manager.isStair(getLocation())) {
+                // camPos.z = (getLocation().getZ()*100) + (camPos.x % 100) + 100;
+                if (manager.isStair(lastLoca) || lastLoca.getX() > getLocation().getX()) {
+                    camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
+                    return;
+                } else {
+                    camPos = lastLoc;
+                }
 
-        } else if (manager.isStair(lastLoca) && ((camPos.z) % 100) > 60) {
-            camPos.z = (getLocation().getZ() * 100) + 100;
-        } else if (manager.isStair(getLocation().getRelative(Direction.DOWN))) {
-            camPos.z = (getLocation().getZ() * 100) - 100;
-            camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
-        } else {
-            camPos.sub(mvmt);
+            } else if (manager.isStair(lastLoca) && ((camPos.z) % 100) > 60) {
+                camPos.z = (getLocation().getZ() * 100) + 100;
+            } else if (manager.isStair(getLocation().getRelative(Direction.DOWN))) {
+                camPos.z = (getLocation().getZ() * 100) - 100;
+                camPos.z = (getLocation().getZ() * 100) + ((camPos.x - 50) % 100) + 100;
+            } else {
+                camPos.sub(mvmt);
+            }
+            camPos.z = (getLocation().getZ() * 100);
         }
-        camPos.z = (getLocation().getZ() * 100);
     }
 
     public Location getLocation() {
         PVector realPos = PVector.div(camPos, Room.ROOM_SIZE);
         return new Location(-Math.round(realPos.x), -Math.round(realPos.y), (int) realPos.z);
     }
-
+    boolean hasSpeed = false;
+    int speedTicks = 0;
     @Override
     public void render(TestEngine engine, Rectangle blueBounds) {
         if (engine.frameCount % engine.frameRate < 1) {
             if (bullets < 8)
                 bullets++;
+            if (hasSpeed)
+                speedTicks++;
+        }
+        if (speedTicks==15) {
+            hasSpeed = false;
+            speedTicks = 0;
         }
 //        float deltaX = engine.mouseX-engine.width/2;
 //        deltaX = PApplet.map(deltaX,0,engine.width,0,rotSpeed);
@@ -142,6 +150,20 @@ public class Player implements GameObject {
             engine.musicManager.getScreechSound().play();
         }
         this.hit = true;
+    }
+
+    public void applyPowerup(int type) {
+        switch (type) {
+            case 1:
+                bullets+=4;
+                break;
+            case 2:
+                health = 3;
+                break;
+            case 3:
+                hasSpeed = true;
+                break;
+        }
     }
 
     public boolean isDead() {
