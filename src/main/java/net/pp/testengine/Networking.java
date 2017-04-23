@@ -105,19 +105,29 @@ public class Networking {
             if (in.readBoolean()) {
                 engine.projectileMap.get(id).dead = true;
             }
+        } else if(magic.startsWith("DEAD")){
+            String s = in.readUTF();
+            if(engine.playerMap.containsKey(s)){
+                engine.playerMap.remove(s);
+            }
         }
     }
 
     public void socketSender(DataOutputStream out) throws IOException{
         for(Player p : engine.playerMap.values()){
-            out.writeUTF("MAGIC");
-            out.writeUTF(p.getPlayerName());
-            out.writeFloat(p.getCamPos().x);
-            out.writeFloat(p.getCamPos().y);
-            out.writeFloat(p.getCamPos().z);
-            out.writeFloat(p.getCamRot());
-            out.writeBoolean(p.hit);
-            p.hit = false;
+            if(p.isDead()){
+                out.writeUTF("DEAD");
+                out.writeUTF(p.getPlayerName());
+            } else {
+                out.writeUTF("MAGIC");
+                out.writeUTF(p.getPlayerName());
+                out.writeFloat(p.getCamPos().x);
+                out.writeFloat(p.getCamPos().y);
+                out.writeFloat(p.getCamPos().z);
+                out.writeFloat(p.getCamRot());
+                out.writeBoolean(p.hit);
+                p.hit = false;
+            }
         }
         for (Projectile p : engine.projectileMap.values()) {
             out.writeUTF("BULLET");
