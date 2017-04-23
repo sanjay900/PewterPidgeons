@@ -26,7 +26,7 @@ public class TestEngine extends PApplet {
     MiniMap miniMap;
     KeyInput input = new KeyInput();
     TestWindow window;
-    public static final String GAME_NAME = "%insert_title%";
+    public static final String GAME_NAME = "ULTIMATE BEASTMASTER";
     ArrayList<Sticker> stickerList;
     ScreenCoord2WorldCoord s = new ScreenCoord2WorldCoord();
     MusicManager musicManager;
