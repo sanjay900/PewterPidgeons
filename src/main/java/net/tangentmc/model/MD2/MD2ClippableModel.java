@@ -60,7 +60,7 @@ public class MD2ClippableModel {
         }
 
         animationList.add(new Animation(firstFrame, lastFrame, 0, 0.0F, 1.0F, 1.0F));
-        return (Animation[])animationList.toArray(new Animation[animationList.size()]);
+        return animationList.toArray(new Animation[animationList.size()]);
     }
     public void drawModel(Rectangle clipBounds, TestEngine engine) {
         if(this.animation instanceof TweenAnimation && ((TweenAnimation)this.animation).isIntermediate()) {
@@ -86,9 +86,6 @@ public class MD2ClippableModel {
                     int x = (int) s.screenXImpl(vert.x, vert.y, vert.z,engine);
                     int y = (int) s.screenYImpl(vert.x, vert.y, vert.z,engine);
                     if (!clipBounds.contains(new Point(x, y))) {
-                        System.out.println(vert);
-                        System.out.println(new PVector(x,y));
-                        System.out.println(clipBounds);
                         continue nextTriangle;
                     }
                 }
