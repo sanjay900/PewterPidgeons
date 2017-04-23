@@ -62,7 +62,6 @@ public class TestEngine extends PApplet {
     public void draw() {
         if (!readyForSeed) {
             hint(PConstants.DISABLE_DEPTH_TEST);
-            hud.render(new Player(new Location(0,0,0)));
             return;
         }
         if (!seedSet) {
@@ -81,9 +80,10 @@ public class TestEngine extends PApplet {
         hint(PConstants.ENABLE_DEPTH_TEST);
         Rectangle blueBounds = findBounds();
         player.move(input.getMotion(),manager);
-        new ArrayList<>(projectileMap.values()).forEach(Projectile::update);
+        projectileMap.values().forEach(Projectile::update);
         clear();
-        new ArrayList<>(playerMap.values()).forEach(p -> p.render(this,blueBounds));
+        player.render(this,blueBounds);
+        playerMap.values().forEach(p -> p.drawOtherPlayer(this,blueBounds));
         s.captureViewMatrix((PGraphics3D) this.g);
         manager.render(this,blueBounds);
         new ArrayList<>(projectileMap.values()).forEach(p -> p.render(this,blueBounds));

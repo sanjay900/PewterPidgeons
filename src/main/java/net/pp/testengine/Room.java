@@ -27,6 +27,7 @@ public class Room implements GameObject{
     @Setter
     private Player placedMine = null;
     private MapManager manager;
+    @Getter
     Location position;
     public static final int ROOM_SIZE = 100;
     public boolean isWall;

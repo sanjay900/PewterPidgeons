@@ -1,8 +1,5 @@
+in float gl_FragDepth;
 
-in vec2 fragCoord;
-in float fragDepth;
-out vec4 gl_FragColor;
-
-void mainImage(){
-    gl_FragColor = vec4(fragCoord, fragDepth, 1.0);
+void main(){
+    gl_FragColor = vec4(gl_FragDepth, gl_FragDepth, gl_FragDepth, 1.0);
 }

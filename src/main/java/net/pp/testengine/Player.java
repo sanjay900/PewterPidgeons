@@ -1,5 +1,6 @@
 package net.pp.testengine;
 
+import ecs100.UI;
 import lombok.Getter;
 import lombok.Setter;
 import processing.core.PConstants;
@@ -111,9 +112,14 @@ public class Player implements GameObject {
             engine.translate(camPos.x, camPos.z-30, camPos.y);
             camRotation = new PVector();
             camRotation = engine.getMatrix().mult(camRotation,null);
-        } else if (blueBounds.width > 0){
+        }
+    }
+    public void drawOtherPlayer(TestEngine engine, Rectangle blueBounds) {
+        if (isLocal) return;
+        if (blueBounds.width > 0){
+            PVector test = camPos.copy();
             engine.pushMatrix();
-            engine.translate(-camPos.x,-camPos.z+Room.ROOM_SIZE/2,-camPos.y);
+            engine.translate(-test.x,-test.z+Room.ROOM_SIZE/2,-test.y);
             engine.rotateX(PConstants.HALF_PI);
             engine.rotateZ(-camRot-PConstants.HALF_PI);  // reversed as it rotates world objects counter-clockwise
             engine.scale(5);
@@ -121,11 +127,10 @@ public class Player implements GameObject {
             engine.popMatrix();
         }
     }
-
-    public PVector getRelative(Player p) {
+    public PVector getRelative(Location l) {
         return new PVector(
-                this.getLocation().getX() - p.getLocation().getX(),
-                this.getLocation().getY() - p.getLocation().getY());
+                this.getLocation().getX() - l.getX(),
+                this.getLocation().getY() - l.getY());
     }
 
     public boolean collides(Projectile projectile) {
